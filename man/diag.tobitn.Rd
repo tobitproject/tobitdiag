@@ -2,21 +2,18 @@
 % Please edit documentation in R/diagtobit.R
 \name{diag.tobitn}
 \alias{diag.tobitn}
-\title{Local Influence Measures}
+\title{Local Influence}
 \usage{
 diag.tobitn(model, tau = 0, npoints = 0)
 }
 \arguments{
-\item{model}{x}
+\item{model}{an object of class "tobit" as fitted by tobit.}
 
-\item{tau}{x}
+\item{tau}{is the censoring point. The default is zero.}
 
-\item{npoints}{x}
-}
-\value{
-x
+\item{npoints}{points to be plotted.}
 }
 \description{
-x
+Local influence plots for tobit model.
 }
 
