@@ -1,12 +1,11 @@
-#'Local Influence Measures
+#'Local Influence
 #'
-#'@description x
+#'@description Local influence plots for tobit model.
 #'
-#'@param model x
-#'@param tau x
-#'@param npoints x
+#'@param model an object of class "tobit" as fitted by tobit.
+#'@param tau is the censoring point. The default is zero.
+#'@param npoints points to be plotted.
 #'
-#'@return x
 #'
 #'@export
 
@@ -169,15 +168,14 @@ diag.tobitn <-function(model,tau=0,npoints=0)
   
 }
 
-#'Local Influence Measures
+#'Local Influence
 #'
-#'@description x
+#'@description Local influence plots for tobit-t model.
 #'
-#'@param model x
-#'@param tau x
-#'@param npoints x
+#'@param model an object of class "tobit" as fitted by tobit.
+#'@param tau is the censoring point. The default is zero.
+#'@param npoints points to be plotted.
 #'
-#'@return x
 #'
 #'@export
 

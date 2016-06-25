@@ -1,12 +1,13 @@
 #'Residuals
 #'
-#'@description x
+#'@description Calculates martingale, deviance, martingale type residuals for tobit-t model.
 #'
-#'@param model x 
-#'@param type x
-#'@param tau x
+#'@param model an object of class "tobit" as fitted by tobit.
+#'@param type what type of residuals should be used. 
+#'Possible type are: "deviance", "martingale" and "martingale type". 
+#'@param tau is the censoring point. The default is zero.
 #'
-#'@return x
+#'@return The returned object is a vector with one element for each subject. 
 #'
 #'@export
 
@@ -35,16 +36,16 @@ residuals <- function(model,type,tau=0)
 
 #'Envelope
 #'
-#'@description x
+#'@description Computes simulation envelopes of a tobit-t model.
 #'
-#'@param model x
-#'@param res x
-#'@param nboot x
-#'@param alpha x
-#'@param intercept x
-#'@param td x
+#'@param model an object of class "tobit" as fitted by tobit.
+#'@param res character string indicating the type of residual 
+#'desired. Possible values are "deviance", "martingale" and "martingale type".
+#'@param nboot Number of simulated point patterns to be generated when computing the envelopes.
+#'@param alpha the confidence level required. The default is to find 95 confidence envelopes.
+#'@param intercept logical. Should an intercept be included in the null model?
+#'@param td assumed distribution for the dependent variable y. 
 #'
-#'@return
 #'
 #'@export
 
@@ -116,19 +117,17 @@ envelope <- function(model,res="martingalet",nboot = 19,alpha=0.05,tau=0,interce
   
 }
 
-#' Envelope
+#' Envelope 
 #'
-#'@description x
+#'@description Computes simulation envelopes of a tobit model.
 #'
-#' @param  model x
-#' @param nboot x
-#' @param alpha x
-#' @param tau x
-#' @param intercept x
+#'@param model an object of class "tobit" as fitted by tobit.
+#'@param res character string indicating the type of residual 
+#'desired. Possible values are "deviance", "martingale" and "martingale type".
+#'@param nboot Number of simulated point patterns to be generated when computing the envelopes.
+#'@param alpha the confidence level required. The default is to find 95 confidence envelopes.
+#'@param intercept logical. Should an intercept be included in the null model?
 #'
-#'  
-#' @return 
-#' 
 #' @export
 #' 
 

@@ -7,16 +7,17 @@
 residuals(model, type, tau = 0)
 }
 \arguments{
-\item{model}{x}
+\item{model}{an object of class "tobit" as fitted by tobit.}
 
-\item{type}{x}
+\item{type}{what type of residuals should be used. 
+Possible type are: "deviance", "martingale" and "martingale type".}
 
-\item{tau}{x}
+\item{tau}{is the censoring point. The default is zero.}
 }
 \value{
-x
+The returned object is a vector with one element for each subject.
 }
 \description{
-x
+Calculates martingale, deviance, martingale type residuals for tobit-t model.
 }
 

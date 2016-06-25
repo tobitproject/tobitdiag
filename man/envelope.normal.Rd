@@ -8,20 +8,18 @@ envelope.normal(model, nboot = 19, alpha = 0.05, tau = 0,
   intercept = "TRUE")
 }
 \arguments{
-\item{model}{x}
+\item{model}{an object of class "tobit" as fitted by tobit.}
 
-\item{nboot}{x}
+\item{nboot}{Number of simulated point patterns to be generated when computing the envelopes.}
 
-\item{alpha}{x}
+\item{alpha}{the confidence level required. The default is to find 95 confidence envelopes.}
 
-\item{tau}{x}
+\item{intercept}{logical. Should an intercept be included in the null model?}
 
-\item{intercept}{x}
-}
-\value{
-
+\item{res}{character string indicating the type of residual 
+desired. Possible values are "deviance", "martingale" and "martingale type".}
 }
 \description{
-x
+Computes simulation envelopes of a tobit model.
 }
 
