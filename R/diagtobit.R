@@ -326,13 +326,13 @@ diag.tobitt <-function(model,tau=0,npoints=0)
 
 #' Cook's distance
 #' 
-#' A measure that combines the information of leverage and residual of the observation
+#' @description A measure that combines the information of leverage and residual of the observation
 #' 
-#' @param model
-#' @param tau
-#' @param npoints
-#' @param plot
-#' @param dist
+#' @param model x
+#' @param tau x
+#' @param npoints x
+#' @param plot x
+#' @param dist x
 #' 
 #' @export
 
