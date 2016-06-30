@@ -336,24 +336,81 @@ diag.tobitt <-function(model,tau=0,npoints=0)
 #' 
 #' @export
 
-cooks.distn <- function(model, tau, npoints, dist="t", plot=TRUE,ylim=NULL,xlim=NULL,pch=19,cex=0.5,type="p",col=NULL)
+cooks.distn <- function(formula, tau=0, npoints=NULL, dist="t", plot=FALSE,xlab=NULL,ylab=NULL,ylim=NULL,xlim=NULL,pch=19,cex=0.5,type="p",col=NULL)
   {
   
-if(dist=="t")
-{
+  if(dist=="t")
+  {
+  modt <-  tobit(formula, dist="t")
+  thetas <- as.vector(c(modt$coef,modt$scale))
+  X    <- model.matrix(modt) 
+  n    <-dim(X)[1]
+  p    <-dim(X)[2]
+  y  <- as.numeric(model$y)[1:n]
+  c  <- (1*(y>tau))
+  #Lsigmasigma
+  nu <- modt$parms
+  muhat <- modt$linear.predictors
+  sigmahat <- modt$scale
+  deltahat <-(y-muhat)/sigmahat
+  phi         <- dt(deltahat,modt$parms)
+  Phi         <- pt(deltahat,modt$parms)
+  Wdelta      <- phi/Phi
   
   
-} 
-  else{
-
+  #############################################################################################
+  ##########################################The Hessian Matrix#################################
+  #############################################################################################
+  
+  const <- gamma((nu+1)/2)/((gamma(nu/2)*sqrt(pi*nu)))
+  deriv_phi <- -const*((nu+1)/nu)*deltahat*((1+((deltahat^2)/nu))^(-(nu+3)/2))
+  deriv_Wdelta <- (deriv_phi/Phi)+((phi/Phi)^2)
+  
+  ##############################################Lsigmasigma####################################
+  parte1 <- (1/(sigmahat^2))*sum((1-c)*(2*Wdelta*deltahat + (deltahat^2)*deriv_Wdelta))
+  parte2 <- (1/(sigmahat^2))*sum(c*(1 - (nu+1)*((3*(deltahat^2)*nu + (deltahat^4))/(((deltahat^2)+nu)^2)))) 
+  Lsigmasigma  <- (1/(sigmahat^2))*(sum((1-c)*(2*Wdelta*deltahat))) + (1/(sigmahat^2))*(sum((1-c)*deltahat*deriv_Wdelta*deltahat))+
+    (1/(sigmahat^2))*(sum(c*(1-3*(((nu+1)/nu)*(deltahat^2)/(1+((deltahat^2)/nu)))+
+                               2*((nu+1)/nu^2)*(deltahat^4)/(1+(deltahat^2)/nu)^2)))
+  
+  #################################################Lbetabeta ##################################
+  parte1       <- (1-c)*(1/(sigmahat^2))*deriv_Wdelta	#Parte com censura
+  parte2       <- c*(1/(sigmahat^2))*((((nu+1)/nu)/(1+((deltahat^2)/nu))) +
+                                        2*((nu+1)/nu^2)*(deltahat^2)/(1+(deltahat^2)/nu)^2) #Parte sem censura
+  vi           <- parte1 - parte2
+  v            <- as.vector(vi)
+  V            <- diag(v)
+  Lbeta        <- t(X)%*%V%*%X
+  
+  ######################################################Lbetasigma############################### 
+  parte11      <- (1-c)*((1/(sigmahat^2))*(Wdelta+deltahat*deriv_Wdelta)) #Parte com censura
+  parte12      <- c*(2/(sigmahat^2))*((-(nu+1)/nu)*(deltahat/(1+((deltahat^2)/nu))) 
+                                      +((nu+1)/nu^2)*(deltahat^3)/(1+(deltahat^2)/nu)^2)#Parte sem censura
+  hi           <- parte11 + parte12
+  Lbetasigma   <- t(X)%*%hi
+  
+  L1           <- cbind(Lbeta,Lbetasigma)
+  L2           <- cbind(t(Lbetasigma), Lsigmasigma)
+  observmatrix <- rbind(L1,L2)
+  
+  values <- vector()
+   for(i in 1:n)
+    {
+    observ <- i
+    fit <- tobit(formula,dist="t",subset = -observ)
+    thetai<-as.vector(c(fit$coef,fit$scale))
+    values[i]<-(1/(p+1))*t(theta-thetai)%*%(-observmatrix)%*%(theta-thetai)
+    }
+  } 
+    else{
+    model <- tobit(formula)
     theta <-c(model$coef,model$scale)
     theta <-as.vector(theta)
-    c  <- (1*(y>0))
     X    <-model.matrix(model) 
     n    <-dim(X)[1]
     p    <-dim(X)[2]
-    dados<-rbind(y,c,x1,x2,x3,x4,x5)
-    values <- matrix(0,n,1)
+    y  <- as.numeric(model$y)[1:n]
+    c  <- (1*(y>tau))
     muhat <- model$linear.predictors
     sigmahat <- model$scale
     delta <- (y-muhat)/sigmahat
@@ -391,34 +448,32 @@ if(dist=="t")
     L2           <- cbind(t(Lbetasigma), Lsigmasigma)
     observmatrix <- rbind(L1, L2)
     
-    for(i in 1:n)
-    {
-      dadosn<-subset(dados,select=-i)
-      
-      yi<-dadosn[1,]
-      v1i<-dadosn[3,]
-      v2i<-dadosn[4,]
-      v3i<-dadosn[5,]
-      v4i<-dadosn[6,]
-      v5i<-dadosn[7,]
-      form <- (yi ~ v1i+v2i+v3i+v4i+v5i) 
-      fit <- tobit(form)
-      
-      thetai=as.vector(c(fit$coef,fit$scale))
-      values[i,]=(1/(p+1))*t(theta-thetai)%*%(-observmatrix)%*%(theta-thetai)
+     values <- vector()
+     for(i in 1:n)
+     {
+     observ <- i 
+     print(observ)
+     fit <- tobit(formula,subset = -observ)
+     thetai<-as.vector(c(fit$coef,fit$scale))
+     print(thetai)
+     values[i]<-(1/(p+1))*t(theta-thetai)%*%(-observmatrix)%*%(theta-thetai)
+     print(values)
+     }
     }
-    
-    par(mar=c(4.0, 4.0,0.1,0.1))
-    plot(dist.cook, ylab="D",xlab="I",type="h",ylim=c(0,0.3))
-    identify(dist.cook,n=3)
-    
-    
-  }
   
-
+if(plot==TRUE)
+{
+if(is.null(npoints))
+{  
 par(mar=c(4.0,4.0,0.1,0.1)) #graphical parameter of the margin.
-plot(cook.dist, ylab=ylab,type=type, ylim=ylim, cex=cex, pch=pch,xlab=xlab,col=col,main = NULL,sub = NULL)
-identify(cook.dist,n=npoints)
+plot(values, ylab=ylab,type=type, ylim=ylim, cex=cex, pch=pch,xlab=xlab,col=col,main = NULL,sub = NULL)
+} 
+  else{
+  par(mar=c(4.0,4.0,0.1,0.1)) #graphical parameter of the margin.
+  plot(values, ylab=ylab,type=type, ylim=ylim, cex=cex, pch=pch,xlab=xlab,col=col,main = NULL,sub = NULL)
+  identify(values,n=npoints)
+  }
+} else return(values)
   
 }
 

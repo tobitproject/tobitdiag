@@ -4,12 +4,11 @@
 \alias{cooks.distn}
 \title{Cook's distance}
 \usage{
-cooks.distn(model, tau, npoints, dist = "t", plot = TRUE, ylim = NULL,
-  xlim = NULL, pch = 19, cex = 0.5, type = "p", col = NULL)
+cooks.distn(formula, tau = 0, npoints = NULL, dist = "t", plot = FALSE,
+  xlab = NULL, ylab = NULL, ylim = NULL, xlim = NULL, pch = 19,
+  cex = 0.5, type = "p", col = NULL)
 }
 \arguments{
-\item{model}{x}
-
 \item{tau}{x}
 
 \item{npoints}{x}
@@ -17,6 +16,8 @@ cooks.distn(model, tau, npoints, dist = "t", plot = TRUE, ylim = NULL,
 \item{dist}{x}
 
 \item{plot}{x}
+
+\item{model}{x}
 }
 \description{
 A measure that combines the information of leverage and residual of the observation
