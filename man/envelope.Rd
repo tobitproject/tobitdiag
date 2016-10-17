@@ -5,7 +5,8 @@
 \title{Envelope}
 \usage{
 envelope(model, res = "martingalet", nboot = 19, alpha = 0.05, tau = 0,
-  intercept = "TRUE", td = "t")
+  intercept = "TRUE", td = "t", col = "gray80", xlab = "Q",
+  ylab = "R")
 }
 \arguments{
 \item{model}{an object of class "tobit" as fitted by tobit.}

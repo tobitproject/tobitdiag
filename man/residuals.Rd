@@ -4,7 +4,7 @@
 \alias{residuals}
 \title{Residuals}
 \usage{
-residuals(model, type, tau = 0)
+residuals(model, type, tau = 0, td = "t")
 }
 \arguments{
 \item{model}{an object of class "tobit" as fitted by tobit.}
@@ -13,6 +13,8 @@ residuals(model, type, tau = 0)
 Possible type are: "deviance", "martingale" and "martingale type".}
 
 \item{tau}{is the censoring point. The default is zero.}
+
+\item{td}{assumed distribution for the dependent variable y. The default is student-t distribution.}
 }
 \value{
 The returned object is a vector with one element for each subject.

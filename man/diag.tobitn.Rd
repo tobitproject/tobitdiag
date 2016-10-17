@@ -4,7 +4,10 @@
 \alias{diag.tobitn}
 \title{Local Influence}
 \usage{
-diag.tobitn(model, tau = 0, npoints = 0)
+diag.tobitn(model, tau = 0, npoints = 0, perturbation = c("cases",
+  "scale", "response", "explanatory"), l = NULL, ylim = c(0, 0.4),
+  plot.ci = FALSE, plot.dmax = FALSE, vecplot = c("theta", "beta",
+  "sigma"))
 }
 \arguments{
 \item{model}{an object of class "tobit" as fitted by tobit.}
