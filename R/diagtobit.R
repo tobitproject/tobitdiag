@@ -961,7 +961,7 @@ AICc <- function (object,object1=NULL)
 #' 
 #' @export
 
-weights.tobit <- function(model,plot=FALSE)
+weights.tobit <- function(model,plot=FALSE,npoints=0)
 {
   X <-model.matrix(model)
   n=nrow(X) #number observations 
@@ -980,6 +980,7 @@ weights.tobit <- function(model,plot=FALSE)
     rD <- residuals(model,"martingalet",tau=0,dist="t")#Martingale-type residual
     dev.new()
     par(mar=c(4.0, 4.0,0.1,0.1))
-    plot(rD,weights,pch=20)
+    plot(rD,weights,pch=20,cex=0.8)
+    if(npoints!=0) identify(rD,weights,n=npoints)
   }
 }

@@ -4,16 +4,16 @@
 \alias{weights.tobit}
 \title{Weights}
 \usage{
-\method{weights}{tobit}(model, plot = FALSE)
+\method{weights}{tobit}(model, plot = FALSE, npoints = 0)
 }
 \arguments{
 \item{model}{x}
 
 \item{plot}{x}
 
-\item{tau}{x}
-
 \item{npoints}{x}
+
+\item{tau}{x}
 
 \item{dist}{x}
 }
