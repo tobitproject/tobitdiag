@@ -949,7 +949,7 @@ AICc <- function (object,object1=NULL)
   }
 }
 
-#' Weights.tobit 
+#' weights.tobit 
 #' 
 #' @description A measure that combines the information of leverage and residual of the observation
 #' 
