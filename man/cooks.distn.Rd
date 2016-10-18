@@ -4,7 +4,11 @@
 \alias{cooks.distn}
 \title{Cook's distance}
 \usage{
+<<<<<<< HEAD
 cooks.distn(formula, tau = 0, npoints = 0, dist = "t", plot = FALSE,
+=======
+cooks.distn(formula, tau = 0, npoints = NULL, dist = "t", plot = FALSE,
+>>>>>>> 3927da0b4283228af32c64cc74388102d73c101e
   xlab = NULL, ylab = NULL, ylim = NULL, xlim = NULL, pch = 19,
   cex = 0.5, type = "p", col = NULL)
 }
