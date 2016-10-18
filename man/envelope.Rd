@@ -5,7 +5,7 @@
 \title{Envelope}
 \usage{
 envelope(model, res = "martingalet", nboot = 19, alpha = 0.05, tau = 0,
-  intercept = "TRUE", td = "t", col = "gray80", xlab = "Q",
+  intercept = "TRUE", dist = "t", col = "gray80", xlab = "Q",
   ylab = "R")
 }
 \arguments{

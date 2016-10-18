@@ -62,9 +62,9 @@ residuals <- function(model,type,tau=0,td ="t")
 #'
 #'@export
 
-envelope <- function(model,res="martingalet",nboot = 19,alpha=0.05,tau=0,intercept = "TRUE",td="t",col="gray80",xlab="Q",ylab="R")
+envelope <- function(model,res="martingalet",nboot = 19,alpha=0.05,tau=0,intercept = "TRUE",dist="t",col="gray80",xlab="Q",ylab="R")
 {
-  if(td == "t"){
+  if(dist == "t"){
     n  <- summary(model)$n[1]
     y  <- as.numeric(model$y)[1:n]
     nu <- model$parms
