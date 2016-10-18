@@ -961,7 +961,7 @@ AICc <- function (object,object1=NULL)
 #' 
 #' @export
 
-weights.tobit <- function(model,plot=FALSE,npoints=0)
+weights <- function(model,plot=FALSE,npoints=0)
 {
   X <-model.matrix(model)
   n=nrow(X) #number observations 
