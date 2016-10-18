@@ -4,8 +4,7 @@
 \alias{weights.tobit}
 \title{Weights}
 \usage{
-\method{weights}{tobit}(model, plot = FALSE, res = "martingalet", tau = 0,
-  ...)
+\method{weights}{tobit}(model, plot = FALSE)
 }
 \arguments{
 \item{model}{x}

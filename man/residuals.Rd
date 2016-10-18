@@ -4,7 +4,7 @@
 \alias{residuals}
 \title{Residuals}
 \usage{
-residuals(model, type, tau = 0, td = "t")
+residuals(model, type, tau = 0, dist = "t")
 }
 \arguments{
 \item{model}{an object of class "tobit" as fitted by tobit.}

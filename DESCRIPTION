@@ -6,7 +6,8 @@ Description: Diagnostic the influential observations of tobit models using Local
     Influence Analysis of Cook with different curvatures.
 Depends:
     R (>= 2.13.0),
-    AER (>= 1.2-4)
+    AER (>= 1.2-4),
+    pracma
 License: GNU GPL v3
 LazyData: true
 Imports:

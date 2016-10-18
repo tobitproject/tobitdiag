@@ -961,21 +961,25 @@ AICc <- function (object,object1=NULL)
 #' 
 #' @export
 
-weights.tobit <- function(model,plot=FALSE, res="martingalet",tau=0,...)
+weights.tobit <- function(model,plot=FALSE)
 {
-  sigma <- model$scale
-  respest <- fitted(model)
-  resp <- model$y
-  nu <- model$df
-  delta <- (resp - respest)/sigma
-  weights <- (nu+1)/(nu + (delta^2))
+  X <-model.matrix(model)
+  n=nrow(X) #number observations 
+  sigmahat <- model$scale
+  muhat <- model$linear.predictors
+  y  <- as.numeric(model$y)[1:n]
+  nu <- model$parms
+  deltahat <- (y - muhat)/sigmahat
+  weights <- (nu+1)/(nu + (deltahat^2))
   
   if(plot==FALSE)
     {
     return(weights) 
   }
   else{
-    rD <- residuals(model,res,tau=tau,dist="t")#Martingale-type residual
-    plot(rD,weights,pch=19)
+    rD <- residuals(model,"martingalet",tau=0,dist="t")#Martingale-type residual
+    dev.new()
+    par(mar=c(4.0, 4.0,0.1,0.1))
+    plot(rD,weights,pch=20)
   }
 }

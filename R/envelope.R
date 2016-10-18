@@ -11,9 +11,9 @@
 #'
 #'@export
 
-residuals <- function(model,type,tau=0,td ="t")
+residuals <- function(model,type,tau=0,dist ="t")
 { # begin function
-  if(td=="t"){
+  if(dist=="t"){
     n <- summary(model)$n[1] 
     y  <- as.numeric(model$y)[1:n]
     c  <- (1*(y>tau))
@@ -74,7 +74,7 @@ envelope <- function(model,res="martingalet",nboot = 19,alpha=0.05,tau=0,interce
     X <- model.matrix(model)
     var.explic <- X[,-1]
     
-    rD <- residuals(model,res,tau=tau,td="t")#Martingale-type residual
+    rD <- residuals(model,res,tau=tau,dist ="t")#Martingale-type residual
     
     alpha1 <- ceiling(nboot*alpha)
     alpha2 <- ceiling(nboot*(1-alpha))
@@ -137,7 +137,7 @@ envelope <- function(model,res="martingalet",nboot = 19,alpha=0.05,tau=0,interce
     deltahat <-(y-muhat)/sigmahat
     X <- model.matrix(model)
     var.explic <- X[,-1]
-    rD <- residuals(model,res,tau=tau,td="normal")#Martingale-type residual
+    rD <- residuals(model,res,tau=tau,dist ="normal")#Martingale-type residual
     alpha1 <- ceiling(nboot*alpha)
     alpha2 <- ceiling(nboot*(1-alpha))
     e <- matrix(0,n,nboot)
