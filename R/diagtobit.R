@@ -75,7 +75,7 @@ diag.tobit <-function(model,tau=0,npoints=0,dist="t",perturbation=c("cases","sca
     B3=rbind(b311,b312)  # parameter theta
     
     
-    if(perturbation == "case")
+    if(perturbation == "cases")
     {
       #C?lculo da matriz delta
       bi           <- -(1-c)*(1/sigmahat)*Wdelta+ c*(1/sigmahat)*((nu+1)/nu)*deltahat/(1+((deltahat^2)/nu))
