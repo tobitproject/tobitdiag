@@ -4,9 +4,7 @@
 \alias{envelope}
 \title{Envelope}
 \usage{
-envelope(model, res = "martingalet", nboot = 19, alpha = 0.05, tau = 0,
-  intercept = "TRUE", dist = "t", col = "gray80", xlab = "Q",
-  ylab = "R")
+function(model,res="martingalet",nboot = 19,alpha=0.05,tau=0,intercept = "TRUE",dist="t",col="gray80",xlab="Q",ylab="R")
 }
 \arguments{
 \item{model}{an object of class "tobit" as fitted by tobit.}
@@ -20,9 +18,37 @@ desired. Possible values are "deviance", "martingale" and "martingale type".}
 
 \item{intercept}{logical. Should an intercept be included in the null model?}
 
-\item{td}{assumed distribution for the dependent variable y.}
+\item{dist}{assumed distribution for the dependent variable y.}
+
+\item{col}{The colors for points. The default is gray80.}
+
+\item{xlab}{a label for the x axis, defaults to a description of x.}
+
+\item{ylab}{a label for the y axis, defaults to a description of y.}
 }
 \description{
-Computes simulation envelopes of a tobit-t model.
+Computes simulation envelopes of a normal tobit and tobit-t model.
+}
+\examples{
+data("PSID1976")
+y<-PSID1976$wage
+x1<- PSID1976$age
+x2<- PSID1976$education
+x3<- PSID1976$youngkids
+x4<- PSID1976$oldkids
+x5<- PSID1976$experience
+
+form <- (y ~ x1+x2+x3+x4+x5)
+mt<- tobit(form, dist="t") #tobit-t model
+mnormal <- tobit(form) # tobit normal model
+
+#Analysis under the normal tobit model
+envelope(mnormal,dist = "normal")
+
+#Analysis under the tobit-t model
+envelope(mt,dist = "t")
+}
+\references{
+Barros, M., Galea, M., Leiva, V. and Santos-Neto, M. Generalized tobit models: Diagnostics and application in econometrics. (submitted manuscript)
 }
 

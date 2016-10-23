@@ -2,10 +2,72 @@
 #'
 #'@description Local influence plots for tobit model.
 #'
+#'@usage
+#'function(model,tau=0,npoints=0,dist="t",perturbation=c("cases","scale","response","explanatory"),l=NULL,ylim=c(0,0.40),plot.ci=FALSE,plot.dmax=FALSE,vecplot = c("theta","beta","sigma")) 
+#'
 #'@param model an object of class "tobit" as fitted by tobit.
 #'@param tau is the censoring point. The default is zero.
-#'@param npoints points to be plotted.
+#'@param npoints pthe maximum number of points to be identified.
+#'@param dist assumed distribution for the dependent variable y.
+#'@param perturbation types of perturbation schemes for to be used.
+#'@param l default is NULL. Necessary for the explanatory variable perturbation.
+#'@param vecplot informe if the normal curvature is calculed for theta, beta or sigma.
+#'@param ylim the y limits of the plot.
+#'@param plot.ci a logical value indicating if the normal curvature should be plotted or no.
+#'@param plot.dmax a logical value indicating if dmax should be plotted or no.
 #'
+#'@references
+#'Barros, M., Galea, M., Leiva, V. and Santos-Neto, M. Generalized tobit models: Diagnostics and application in econometrics. (submitted manuscript)
+#'
+#'@examples
+#'
+#'data("PSID1976")
+#'y<-PSID1976$wage
+#'x1<- PSID1976$age
+#'x2<- PSID1976$education
+#'x3<- PSID1976$youngkids
+#'x4<- PSID1976$oldkids
+#'x5<- PSID1976$experience
+#'
+#'form <- (y ~ x1+x2+x3+x4+x5)
+#'mt<- tobit(form, dist="t") #tobit-t model
+#'mnormal <- tobit(form) # tobit normal model
+#'
+#'#Analysis under the normal tobit model
+#'
+#'diag.tobit(mnormal,npoints = 3,dist="normal",perturbation = "cases",plot.ci=TRUE,vecplot="theta") #normal curvature for theta under case-weight perturbation
+#'diag.tobit(mnormal,npoints = 3,dist="normal",perturbation = "cases",plot.ci=TRUE,vecplot="beta") #normal curvature for beta under case-weight perturbation
+#'diag.tobit(mnormal,npoints = 3,dist="normal",perturbation = "cases",plot.ci=TRUE,vecplot="sigma") #normal curvature for sigma under case-weight perturbation
+#'
+#'diag.tobit(mnormal,npoints = 0,dist="normal",perturbation = "response",plot.ci=TRUE,vecplot="theta") #normal curvature for theta under response perturbation
+#'diag.tobit(mnormal,npoints = 0,dist="normal",perturbation = "response",plot.ci=TRUE,vecplot="beta") #normal curvature for beta under response perturbation
+#'diag.tobit(mnormal,npoints = 3,dist="normal",perturbation = "response",plot.ci=TRUE,vecplot="sigma") #normal curvature for sigma under response perturbation
+#'
+#'diag.tobit(mnormal,npoints = 3,dist="normal",perturbation = "scale",plot.ci=TRUE,vecplot="theta") #normal curvature for theta under scale perturbation
+#'diag.tobit(mnormal,npoints = 0,dist="normal",perturbation = "scale",plot.ci=TRUE,vecplot="beta") #normal curvature for beta under scale perturbation
+#'diag.tobit(mnormal,npoints = 3,dist="normal",perturbation = "scale",plot.ci=TRUE,vecplot="sigma") #normal curvature for sigma under scale perturbation
+#'
+#'diag.tobit(mnormal,npoints = 0,dist="normal",perturbation = "explanatory",l=2,plot.ci=TRUE,vecplot="theta") #normal curvature for theta under explanatory perturbation
+#'diag.tobit(mnormal,npoints = 0,dist="normal",perturbation = "explanatory",l=2,plot.ci=TRUE,vecplot="beta") #normal curvature for beta under explanatory perturbation
+#'diag.tobit(mnormal,npoints = 3,dist="normal",perturbation = "explanatory",l=2,plot.ci=TRUE,vecplot="sigma") #normal curvature for sigma under explanatory perturbation
+#'
+#'#Analysis under the tobit t model
+#'
+#'diag.tobit(mt,npoints = 0,dist="t",perturbation = "cases",plot.ci=TRUE,vecplot="theta") #normal curvature for theta under case-weight perturbation
+#'diag.tobit(mt,npoints = 0,dist="t",perturbation = "cases",plot.ci=TRUE,vecplot="beta") #normal curvature for beta under case-weight perturbation
+#'diag.tobit(mt,npoints = 0,dist="t",perturbation = "cases",plot.ci=TRUE,vecplot="sigma") #normal curvature for sigma under case-weight perturbation
+#'
+#'diag.tobit(mt,npoints = 0,dist="t",perturbation = "response",plot.ci=TRUE,vecplot="theta") #normal curvature for theta under response perturbation
+#'diag.tobit(mt,npoints = 0,dist="t",perturbation = "response",plot.ci=TRUE,vecplot="beta") #normal curvature for beta under response perturbation
+#'diag.tobit(mt,npoints = 0,dist="t",perturbation = "response",plot.ci=TRUE,vecplot="sigma") #normal curvature for sigma under response perturbation
+#'
+#'diag.tobit(mt,npoints = 2,dist="t",perturbation = "scale",plot.ci=TRUE,vecplot="theta") #normal curvature for theta under scale perturbation
+#'diag.tobit(mt,npoints = 2,dist="t",perturbation = "scale",plot.ci=TRUE,vecplot="beta") #normal curvature for beta under scale perturbation
+#'diag.tobit(mt,npoints = 2,dist="t",perturbation = "scale",plot.ci=TRUE,vecplot="sigma") #normal curvature for sigma under scale perturbation
+#'
+#'diag.tobit(mt,npoints = 0,dist="t",perturbation = "explanatory",l=2,plot.ci=TRUE,vecplot="theta") #normal curvature for theta under explanatory perturbation
+#'diag.tobit(mt,npoints = 0,dist="t",perturbation = "explanatory",l=2,plot.ci=TRUE,vecplot="beta") #normal curvature for beta under explanatory perturbation
+#'diag.tobit(mt,npoints = 0,dist="t",perturbation = "explanatory",l=2,plot.ci=TRUE,vecplot="sigma") #normal curvature for sigma under explanatory perturbation
 #'
 #'@export
 
@@ -664,242 +726,178 @@ diag.tobit <-function(model,tau=0,npoints=0,dist="t",perturbation=c("cases","sca
 }
 
 
-# Cook's distance
-# 
-# @description A measure that combines the information of leverage and residual of the observation
-# 
-# @param model x
-# @param tau x
-# @param npoints x
-# @param plot x
-# @param dist x
-# 
-# @export
-# 
-# <<<<<<< HEAD
-# cooks.distn <- function(formula, tau=0, npoints=0, dist="t", plot=FALSE,xlab=NULL,ylab=NULL,ylim=NULL,xlim=NULL,pch=19,cex=0.5,type="p",col=NULL)
-# {
-#   
-#   if(dist=="t")
-#   {
-#     model <-  tobit(formula, dist="t")
-#     theta <- as.vector(c(model$coef,model$scale))
-#     X    <- model.matrix(model) 
-#     n    <-dim(X)[1]
-#     p    <-dim(X)[2]
-#     y  <- as.numeric(model$y)[1:n]
-#     c  <- (1*(y>tau))
-#     #Lsigmasigma
-#     nu <- model$parms
-#     muhat <- model$linear.predictors
-#     sigmahat <- model$scale
-#     deltahat <-(y-muhat)/sigmahat
-#     phi         <- dt(deltahat,model$parms)
-#     Phi         <- pt(deltahat,model$parms)
-#     Wdelta      <- phi/Phi
-#     
-#     
-#     #############################################################################################
-#     ##########################################The Hessian Matrix#################################
-#     #############################################################################################
-#     
-#     const <- gamma((nu+1)/2)/((gamma(nu/2)*sqrt(pi*nu)))
-#     deriv_phi <- -const*((nu+1)/nu)*deltahat*((1+((deltahat^2)/nu))^(-(nu+3)/2))
-#     deriv_Wdelta <- (deriv_phi/Phi)+((phi/Phi)^2)
-#     
-#     ##############################################Lsigmasigma####################################
-#     parte1 <- (1/(sigmahat^2))*sum((1-c)*(2*Wdelta*deltahat + (deltahat^2)*deriv_Wdelta))
-#     parte2 <- (1/(sigmahat^2))*sum(c*(1 - (nu+1)*((3*(deltahat^2)*nu + (deltahat^4))/(((deltahat^2)+nu)^2)))) 
-#     Lsigmasigma  <- (1/(sigmahat^2))*(sum((1-c)*(2*Wdelta*deltahat))) + (1/(sigmahat^2))*(sum((1-c)*deltahat*deriv_Wdelta*deltahat))+
-#       (1/(sigmahat^2))*(sum(c*(1-3*(((nu+1)/nu)*(deltahat^2)/(1+((deltahat^2)/nu)))+
-#                                  2*((nu+1)/nu^2)*(deltahat^4)/(1+(deltahat^2)/nu)^2)))
-#     
-#     #################################################Lbetabeta ##################################
-#     parte1       <- (1-c)*(1/(sigmahat^2))*deriv_Wdelta	#Parte com censura
-#     parte2       <- c*(1/(sigmahat^2))*((((nu+1)/nu)/(1+((deltahat^2)/nu))) +
-#                                           2*((nu+1)/nu^2)*(deltahat^2)/(1+(deltahat^2)/nu)^2) #Parte sem censura
-#     vi           <- parte1 - parte2
-#     v            <- as.vector(vi)
-#     V            <- diag(v)
-#     Lbeta        <- t(X)%*%V%*%X
-#     
-#     ######################################################Lbetasigma############################### 
-#     parte11      <- (1-c)*((1/(sigmahat^2))*(Wdelta+deltahat*deriv_Wdelta)) #Parte com censura
-#     parte12      <- c*(2/(sigmahat^2))*((-(nu+1)/nu)*(deltahat/(1+((deltahat^2)/nu))) 
-#                                         +((nu+1)/nu^2)*(deltahat^3)/(1+(deltahat^2)/nu)^2)#Parte sem censura
-#     hi           <- parte11 + parte12
-#     Lbetasigma   <- t(X)%*%hi
-#     
-#     L1           <- cbind(Lbeta,Lbetasigma)
-#     L2           <- cbind(t(Lbetasigma), Lsigmasigma)
-#     observmatrix <- rbind(L1,L2)
-#     
-#     values <- vector()
-#     for(i in 1:n)
-#     {
-#       fit <- tobit(formula,dist="t",subset = -c(i) )
-#       thetai<-as.vector(c(fit$coef,fit$scale))
-#       values[i]<-(1/(p+1))*t(theta-thetai)%*%(-observmatrix)%*%(theta-thetai)
-#     }
-#   } 
-#   else{
-# 
-# cooks.distn <- function(formula, tau=0, npoints=NULL, dist="t", plot=FALSE,xlab=NULL,ylab=NULL,ylim=NULL,xlim=NULL,pch=19,cex=0.5,type="p",col=NULL)
-#   {
-#   
-#   if(dist=="t")
-#   {
-#   modt <-  tobit(formula, dist="t")
-#   thetas <- as.vector(c(modt$coef,modt$scale))
-#   X    <- model.matrix(modt) 
-#   n    <-dim(X)[1]
-#   p    <-dim(X)[2]
-#   y  <- as.numeric(model$y)[1:n]
-#   c  <- (1*(y>tau))
-#   #Lsigmasigma
-#   nu <- modt$parms
-#   muhat <- modt$linear.predictors
-#   sigmahat <- modt$scale
-#   deltahat <-(y-muhat)/sigmahat
-#   phi         <- dt(deltahat,modt$parms)
-#   Phi         <- pt(deltahat,modt$parms)
-#   Wdelta      <- phi/Phi
-#   
-#   
-#   #############################################################################################
-#   ##########################################The Hessian Matrix#################################
-#   #############################################################################################
-#   
-#   const <- gamma((nu+1)/2)/((gamma(nu/2)*sqrt(pi*nu)))
-#   deriv_phi <- -const*((nu+1)/nu)*deltahat*((1+((deltahat^2)/nu))^(-(nu+3)/2))
-#   deriv_Wdelta <- (deriv_phi/Phi)+((phi/Phi)^2)
-#   
-#   ##############################################Lsigmasigma####################################
-#   parte1 <- (1/(sigmahat^2))*sum((1-c)*(2*Wdelta*deltahat + (deltahat^2)*deriv_Wdelta))
-#   parte2 <- (1/(sigmahat^2))*sum(c*(1 - (nu+1)*((3*(deltahat^2)*nu + (deltahat^4))/(((deltahat^2)+nu)^2)))) 
-#   Lsigmasigma  <- (1/(sigmahat^2))*(sum((1-c)*(2*Wdelta*deltahat))) + (1/(sigmahat^2))*(sum((1-c)*deltahat*deriv_Wdelta*deltahat))+
-#     (1/(sigmahat^2))*(sum(c*(1-3*(((nu+1)/nu)*(deltahat^2)/(1+((deltahat^2)/nu)))+
-#                                2*((nu+1)/nu^2)*(deltahat^4)/(1+(deltahat^2)/nu)^2)))
-#   
-#   #################################################Lbetabeta ##################################
-#   parte1       <- (1-c)*(1/(sigmahat^2))*deriv_Wdelta	#Parte com censura
-#   parte2       <- c*(1/(sigmahat^2))*((((nu+1)/nu)/(1+((deltahat^2)/nu))) +
-#                                         2*((nu+1)/nu^2)*(deltahat^2)/(1+(deltahat^2)/nu)^2) #Parte sem censura
-#   vi           <- parte1 - parte2
-#   v            <- as.vector(vi)
-#   V            <- diag(v)
-#   Lbeta        <- t(X)%*%V%*%X
-#   
-#   ######################################################Lbetasigma############################### 
-#   parte11      <- (1-c)*((1/(sigmahat^2))*(Wdelta+deltahat*deriv_Wdelta)) #Parte com censura
-#   parte12      <- c*(2/(sigmahat^2))*((-(nu+1)/nu)*(deltahat/(1+((deltahat^2)/nu))) 
-#                                       +((nu+1)/nu^2)*(deltahat^3)/(1+(deltahat^2)/nu)^2)#Parte sem censura
-#   hi           <- parte11 + parte12
-#   Lbetasigma   <- t(X)%*%hi
-#   
-#   L1           <- cbind(Lbeta,Lbetasigma)
-#   L2           <- cbind(t(Lbetasigma), Lsigmasigma)
-#   observmatrix <- rbind(L1,L2)
-#   
-#   values <- vector()
-#    for(i in 1:n)
-#     {
-#     observ <- i
-#     fit <- tobit(formula,dist="t",subset = -observ)
-#     thetai<-as.vector(c(fit$coef,fit$scale))
-#     values[i]<-(1/(p+1))*t(theta-thetai)%*%(-observmatrix)%*%(theta-thetai)
-#     }
-#   } 
-#     else{
-#     model <- tobit(formula)
-#     theta <-c(model$coef,model$scale)
-#     theta <-as.vector(theta)
-#     X    <-model.matrix(model) 
-#     n    <-dim(X)[1]
-#     p    <-dim(X)[2]
-#     y  <- as.numeric(model$y)[1:n]
-#     c  <- (1*(y>tau))
-#     muhat <- model$linear.predictors
-#     sigmahat <- model$scale
-#     delta <- (y-muhat)/sigmahat
-#     phi         <- dnorm(delta)
-#     Phi         <- pnorm(delta)
-#     Wdelta      <- phi/Phi
-#     deriv_phi   <- (-delta/sqrt(2*pi))*exp(-(delta^2)/2)
-#     deriv_Wdelta<- (deriv_phi/(1-Phi))+((phi/(1-Phi))^2) 
-#     
-#     #############################################################################################
-#     ##########################################The Hessian Matrix#################################
-#     #############################################################################################
-#     #Lsigmasigma
-#     Lsigmasigma  <- (1/(sigmahat^2))*(sum((1-c)*(2*Wdelta*delta)))+
-#       (1/(sigmahat^2))*(sum((1-c)*delta*deriv_Wdelta*delta))+
-#       (1/(sigmahat^2))*(sum(c*(1-3*(delta^2))))
-#     #Quantidades para obter Lbetabeta
-#     #C?lculo de V
-#     parte1       <- (1-c)*(1/(sigmahat^2))*deriv_Wdelta	#Parte com censura
-#     parte2       <- (1/(sigmahat^2))*c  #Parte sem censura
-#     vi           <- parte1-parte2
-#     v            <- as.vector(vi)
-#     V            <- diag(v)
-#     #Lbetabeta
-#     Lbeta        <- t(X)%*%V%*%X
-#     #Quantidades para obter Lbetasigma
-#     #C?lculo de h
-#     parte11      <- (1-c)*((1/(sigmahat^2))*(Wdelta+delta*deriv_Wdelta)) #Parte com censura
-#     parte12      <- -c*(2/(sigmahat^2))*delta  #Parte sem censura
-#     hi           <- parte11+parte12
-#     #Lbetasigma
-#     Lbetasigma   <- t(X)%*%hi
-#     # Matriz de informa??o observada
-#     L1           <- cbind(Lbeta,Lbetasigma)
-#     L2           <- cbind(t(Lbetasigma), Lsigmasigma)
-#     observmatrix <- rbind(L1, L2)
-#     
-#     values <- vector()
-#     for(i in 1:n)
-#     {
-#       fit <- tobit(formula,subset = -c(i) )
-#       thetai<-as.vector(c(fit$coef,fit$scale))
-#       values[i]<-(1/(p+1))*t(theta-thetai)%*%(-observmatrix)%*%(theta-thetai)     }
-#   }
-#   
-#   if(plot==TRUE)
-#   {  
-#     par(mar=c(4.0,4.0,0.1,0.1)) #graphical parameter of the margin.
-#     plot(values, ylab=ylab,type=type,xlim = xlim, ylim=ylim, cex=cex, pch=pch,xlab=xlab,col=col,main = NULL,sub = NULL)
-#     if(npoints!=0)identify(values,n=npoints)
-#   } else return(values)
-#   
-#   
-#      values <- vector()
-#      for(i in 1:n)
-#      {
-#      observ <- i 
-#      print(observ)
-#      fit <- tobit(formula,subset = -observ)
-#      thetai<-as.vector(c(fit$coef,fit$scale))
-#      print(thetai)
-#      values[i]<-(1/(p+1))*t(theta-thetai)%*%(-observmatrix)%*%(theta-thetai)
-#      print(values)
-#      }
-#     }
-#   
-# if(plot==TRUE)
-# {
-# if(is.null(npoints))
-# {  
-# par(mar=c(4.0,4.0,0.1,0.1)) #graphical parameter of the margin.
-# plot(values, ylab=ylab,type=type, ylim=ylim, cex=cex, pch=pch,xlab=xlab,col=col,main = NULL,sub = NULL)
-# } 
-#   else{
-#   par(mar=c(4.0,4.0,0.1,0.1)) #graphical parameter of the margin.
-#   plot(values, ylab=ylab,type=type, ylim=ylim, cex=cex, pch=pch,xlab=xlab,col=col,main = NULL,sub = NULL)
-#   identify(values,n=npoints)
-#   }
-# } else return(values)
-# 
-# }
+#' Cook's distance
+#' 
+#' @description A measure that combines the information of leverage and residual of the observation
+#' 
+#' @usage 
+#' function(model,tau=0, npoints=0, dist="t", plot=FALSE,xlab="Index",ylab="Cook distance",ylim=c(0,1),pch=19,cex=0.5,type="h",col="black")
+#' 
+#' @param model an object of class "tobit" as fitted by tobit.
+#' @param plot logical: if plot is TRUE, the estimate weight against MT residual are plotted and if FALSE the weights are printed.
+#' @param npoints the maximum number of points to be identified.
+#' @param type 1-character string giving the type of plot desired.
+#' @param dist assumed distribution for the dependent variable y.
+#'
+#'@references
+#' Barros, M., Galea, M., Leiva, V. and Santos-Neto, M. Generalized tobit models: Diagnostics and application in econometrics. (submitted manuscript)
+#'
+#'@examples  
+#'data("PSID1976")
+#'y<-PSID1976$wage
+#'x1<- PSID1976$age
+#'x2<- PSID1976$education
+#'x3<- PSID1976$youngkids
+#'x4<- PSID1976$oldkids
+#'x5<- PSID1976$experience
+#'
+#'form <- (y ~ x1+x2+x3+x4+x5)
+#'mt<- tobit(form, dist="t") #tobit-t model
+#'mnormal <- tobit(form) # tobit normal model
+#'
+#'#Analysis under the normal tobit model
+#'
+#'cooks.dist(mnormal,npoints=1,dist="normal",ylim=c(0,0.6),plot=TRUE)
+#'
+#'#Analysis under the tobit t model 
+#'
+#'cooks.dist(mt,npoints=0,dist="t",ylim=c(0,0.6),plot=TRUE)
+#'
+#'@export
+cooks.dist <- function(model,tau=0, npoints=0, dist="t", plot=FALSE,xlab="Index",ylab="Cook distance",ylim=c(0,1),pch=19,cex=0.5,type="h",col="black")
+  {
+
+  if(dist=="t")
+  {
+    theta <- as.vector(c(model$coef,model$scale))
+    X    <- model.matrix(model)
+    n    <-dim(X)[1]
+    p    <-dim(X)[2]
+    y  <- as.numeric(model$y)[1:n]
+    c  <- (1*(y>tau))
+    #Lsigmasigma
+    nu <- model$parms
+    muhat <- model$linear.predictors
+    sigmahat <- model$scale
+    deltahat <-(y-muhat)/sigmahat
+    phi         <- dt(deltahat,model$parms)
+    Phi         <- pt(deltahat,model$parms)
+    Wdelta      <- phi/Phi
+
+    form0 <- paste("x",1:(p-1),collapse = "+",sep = "")
+    form <- paste("y", form0, sep = "~")
+    data0 <- cbind(y,X[,-1])
+  #############################################################################################
+  ##########################################The Hessian Matrix#################################
+  #############################################################################################
+
+  const <- gamma((nu+1)/2)/((gamma(nu/2)*sqrt(pi*nu)))
+  deriv_phi <- -const*((nu+1)/nu)*deltahat*((1+((deltahat^2)/nu))^(-(nu+3)/2))
+  deriv_Wdelta <- (deriv_phi/Phi)+((phi/Phi)^2)
+
+  ##############################################Lsigmasigma####################################
+  parte1 <- (1/(sigmahat^2))*sum((1-c)*(2*Wdelta*deltahat + (deltahat^2)*deriv_Wdelta))
+  parte2 <- (1/(sigmahat^2))*sum(c*(1 - (nu+1)*((3*(deltahat^2)*nu + (deltahat^4))/(((deltahat^2)+nu)^2))))
+  Lsigmasigma  <- (1/(sigmahat^2))*(sum((1-c)*(2*Wdelta*deltahat))) + (1/(sigmahat^2))*(sum((1-c)*deltahat*deriv_Wdelta*deltahat))+
+    (1/(sigmahat^2))*(sum(c*(1-3*(((nu+1)/nu)*(deltahat^2)/(1+((deltahat^2)/nu)))+
+                               2*((nu+1)/nu^2)*(deltahat^4)/(1+(deltahat^2)/nu)^2)))
+
+  #################################################Lbetabeta ##################################
+  parte1       <- (1-c)*(1/(sigmahat^2))*deriv_Wdelta	#Parte com censura
+  parte2       <- c*(1/(sigmahat^2))*((((nu+1)/nu)/(1+((deltahat^2)/nu))) + 2*((nu+1)/(nu^2) )*(deltahat^2)/(1+(deltahat^2)/nu)^2) #Parte sem censura
+  vi           <- parte1 - parte2
+  v            <- as.vector(vi)
+  V            <- diag(v)
+  Lbeta        <- t(X)%*%V%*%X
+
+  ######################################################Lbetasigma###############################
+  parte11      <- (1-c)*((1/(sigmahat^2))*(Wdelta+deltahat*deriv_Wdelta)) #Parte com censura
+  parte12      <- c*(2/(sigmahat^2))*((-(nu+1)/nu)*(deltahat/(1+((deltahat^2)/nu)))
+                                      +((nu+1)/nu^2)*(deltahat^3)/(1+(deltahat^2)/nu)^2)#Parte sem censura
+  hi           <- parte11 + parte12
+  Lbetasigma   <- t(X)%*%hi
+
+  L1           <- cbind(Lbeta,Lbetasigma)
+  L2           <- cbind(t(Lbetasigma), Lsigmasigma)
+  observmatrix <- rbind(L1,L2)
+  inv.lpp <- -solve(observmatrix)
+  
+  values <- vector()
+   for(i in 1:n)
+    {
+    datai <- as.data.frame(data0[-i,])
+    fit <- tobit(formula(form),dist="t",data=datai)
+    thetai<- c(fit$coef,fit$scale)
+    values[i]<-(1/(p+1))*t(theta-thetai)%*%inv.lpp%*%(theta-thetai)
+    }
+  } else{
+    model <- tobit(model)
+    theta <-c(model$coef,model$scale)
+    theta <-as.vector(theta)
+    X    <-model.matrix(model)
+    n    <-dim(X)[1]
+    p    <-dim(X)[2]
+    y  <- as.numeric(model$y)[1:n]
+    c  <- (1*(y>tau))
+    muhat <- model$linear.predictors
+    sigmahat <- model$scale
+    delta <- (y-muhat)/sigmahat
+    phi         <- dnorm(delta)
+    Phi         <- pnorm(delta)
+    Wdelta      <- phi/Phi
+    deriv_phi   <- (-delta/sqrt(2*pi))*exp(-(delta^2)/2)
+    deriv_Wdelta<- (deriv_phi/(1-Phi))+((phi/(1-Phi))^2)
+    
+    form0 <- paste("x",1:(p-1),collapse = "+",sep = "")
+    form <- paste("y", form0, sep = "~")
+    data0 <- cbind(y,X[,-1])
+
+    # #############################################################################################
+    # ##########################################The Hessian Matrix#################################
+    # #############################################################################################
+    #Lsigmasigma
+    Lsigmasigma  <- (1/(sigmahat^2))*(sum((1-c)*(2*Wdelta*delta)))+
+      (1/(sigmahat^2))*(sum((1-c)*delta*deriv_Wdelta*delta))+
+      (1/(sigmahat^2))*(sum(c*(1-3*(delta^2))))
+    #Quantidades para obter Lbetabeta
+    #C?lculo de V
+    parte1       <- (1-c)*(1/(sigmahat^2))*deriv_Wdelta	#Parte com censura
+    parte2       <- (1/(sigmahat^2))*c  #Parte sem censura
+    vi           <- parte1-parte2
+    v            <- as.vector(vi)
+    V            <- diag(v)
+    #Lbetabeta
+    Lbeta        <- t(X)%*%V%*%X
+    #Quantidades para obter Lbetasigma
+    #C?lculo de h
+    parte11      <- (1-c)*((1/(sigmahat^2))*(Wdelta+delta*deriv_Wdelta)) #Parte com censura
+    parte12      <- -c*(2/(sigmahat^2))*delta  #Parte sem censura
+    hi           <- parte11+parte12
+    #Lbetasigma
+    Lbetasigma   <- t(X)%*%hi
+    # Matriz de informa??o observada
+    L1           <- cbind(Lbeta,Lbetasigma)
+    L2           <- cbind(t(Lbetasigma), Lsigmasigma)
+    observmatrix <- rbind(L1, L2)
+    inv.lpp <- -solve(observmatrix)
+    
+    values <- vector()
+    for(i in 1:n)
+    {
+      datai <- as.data.frame(data0[-i,])
+      fit <- tobit(formula(form),data=datai)
+      thetai<- c(fit$coef,fit$scale)
+      values[i]<-(1/(p+1))*t(theta-thetai)%*%inv.lpp%*%(theta-thetai)     
+  }
+}
+  if(plot==TRUE)
+  {
+    dev.new()
+    par(mar=c(4.0,4.0,0.1,0.1))   
+    plot(values, ylab=ylab,type=type, ylim=ylim, cex=cex, pch=pch,xlab=xlab,col=col,main = NULL,sub = NULL)
+    if(npoints!=0) identify(values,n=npoints)
+  } else return(values)
+}
 
 
 
@@ -910,8 +908,8 @@ diag.tobit <-function(model,tau=0,npoints=0,dist="t",perturbation=c("cases","sca
 #' 
 #' AICc is AIC with a correction for finite sample sizes.
 #' 
-#' @param object a fitted model object for which there exists a logLik method to extract the corresponding log-likelihood, or an object inheriting from class logLik
-#' @param object1 optionally more fitted model objects
+#' @param object a fitted model object for which there exists a logLik method to extract the corresponding log-likelihood, or an object inheriting from class logLik.
+#' @param object1 optionally more fitted model objects.
 #' 
 #' @return 
 #' If just one object is provided, a numeric value with the corresponding AICc.
@@ -951,13 +949,34 @@ AICc <- function (object,object1=NULL)
 
 #' weights
 #' 
-#' @description A measure that combines the information of leverage and residual of the observation
+#' @description Estimate weight in the maximum likelihood estimation procedure under the tobit-t model.
 #' 
-#' @param model x
-#' @param tau x
-#' @param npoints x
-#' @param plot x
-#' @param dist x
+#' @usage function(model,plot=FALSE,npoints=0)
+#' 
+#' @param model an object of class "tobit" as fitted by tobit.
+#' @param plot logical: if plot is TRUE, the estimate weight against MT residual are plotted and if FALSE the weights are printed.
+#' @param npoints the maximum number of points to be identified.
+#' 
+#' @references 
+#' 
+#' Barros, M., Galea, M., Leiva, V. and Santos-Neto, M. Generalized tobit models: Diagnostics and application in econometrics. (submitted manuscript)
+#' 
+#' @examples
+#' 
+#'  data("PSID1976")
+#'  y<-PSID1976$wage
+#'  x1<-PSID1976$age
+#'  x2<- PSID1976$education
+#'  x3<- PSID1976$youngkids
+#'  x4<- PSID1976$oldkids
+#'  x5<- PSID1976$experience 
+#'  
+#'  form <- (y ~ x1+x2+x3+x4+x5)
+#'  #### tobit-t model ####
+#'  mt<- tobit(form, dist="t") 
+#'  
+#'  weights(mt,plot=TRUE,npoints = 5)
+#'  
 #' 
 #' @export
 

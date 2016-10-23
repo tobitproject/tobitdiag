@@ -4,7 +4,7 @@
 \alias{residuals}
 \title{Residuals}
 \usage{
-residuals(model, type, tau = 0, dist = "t")
+function(model,type,tau=0,dist ="t")
 }
 \arguments{
 \item{model}{an object of class "tobit" as fitted by tobit.}
@@ -14,12 +14,41 @@ Possible type are: "deviance", "martingale" and "martingale type".}
 
 \item{tau}{is the censoring point. The default is zero.}
 
-\item{td}{assumed distribution for the dependent variable y. The default is student-t distribution.}
+\item{dist}{assumed distribution for the dependent variable y. The default is student-t distribution.}
 }
 \value{
 The returned object is a vector with one element for each subject.
 }
 \description{
 Calculates martingale, deviance, martingale type residuals for tobit-t model.
+}
+\examples{
+data("PSID1976")
+y<-PSID1976$wage
+x1<- PSID1976$age
+x2<- PSID1976$education
+x3<- PSID1976$youngkids
+x4<- PSID1976$oldkids
+x5<- PSID1976$experience
+
+form <- (y ~ x1+x2+x3+x4+x5)
+mt<- tobit(form, dist="t") #tobit-t model
+mnormal <- tobit(form) # tobit normal model
+
+#Analysis under the normal tobit model
+rest <- residuals(mnormal,"martingalet",dist="normal")
+plot(rest,pch=16,cex=0.7, ylim=c(-3,6), ylab="R",xlab="I")
+abline(h=c(-3,3),lty=2)
+identify(rest,n=7,cex=1.0)
+
+#Analysis under the tobit t model
+rest <- residuals(mt,"martingalet",dist="t")
+plot(rest,pch=16,cex=0.7, ylim=c(-3,6), ylab="R",xlab="I")
+abline(h=c(-3,3),lty=2)
+
+
+}
+\references{
+Barros, M., Galea, M., Leiva, V. and Santos-Neto, M. Generalized tobit models: Diagnostics and application in econometrics. (submitted manuscript)
 }
 

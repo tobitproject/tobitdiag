@@ -7,9 +7,9 @@
 AICc(object, object1 = NULL)
 }
 \arguments{
-\item{object}{a fitted model object for which there exists a logLik method to extract the corresponding log-likelihood, or an object inheriting from class logLik}
+\item{object}{a fitted model object for which there exists a logLik method to extract the corresponding log-likelihood, or an object inheriting from class logLik.}
 
-\item{object1}{optionally more fitted model objects}
+\item{object1}{optionally more fitted model objects.}
 }
 \value{
 If just one object is provided, a numeric value with the corresponding AICc.

@@ -4,20 +4,37 @@
 \alias{weights}
 \title{weights}
 \usage{
-weights(model, plot = FALSE, npoints = 0)
+function(model,plot=FALSE,npoints=0)
 }
 \arguments{
-\item{model}{x}
+\item{model}{an object of class "tobit" as fitted by tobit.}
 
-\item{plot}{x}
+\item{plot}{logical: if plot is TRUE, the estimate weight against MT residual are plotted and if FALSE the weights are printed.}
 
-\item{npoints}{x}
-
-\item{tau}{x}
-
-\item{dist}{x}
+\item{npoints}{the maximum number of points to be identified.}
 }
 \description{
-A measure that combines the information of leverage and residual of the observation
+Estimate weight in the maximum likelihood estimation procedure under the tobit-t model.
+}
+\examples{
+
+ data("PSID1976")
+ y<-PSID1976$wage
+ x1<-PSID1976$age
+ x2<- PSID1976$education
+ x3<- PSID1976$youngkids
+ x4<- PSID1976$oldkids
+ x5<- PSID1976$experience 
+ 
+ form <- (y ~ x1+x2+x3+x4+x5)
+ #### tobit-t model ####
+ mt<- tobit(form, dist="t") 
+ 
+ weights(mt,plot=TRUE,npoints = 5)
+ 
+
+}
+\references{
+Barros, M., Galea, M., Leiva, V. and Santos-Neto, M. Generalized tobit models: Diagnostics and application in econometrics. (submitted manuscript)
 }
 
