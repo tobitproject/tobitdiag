@@ -31,7 +31,7 @@
 #'
 #'form <- (y ~ x1+x2+x3+x4+x5)
 #'mt<- tobit(form, dist="t") #tobit-t model
-#'mnormal <- tobit(form) # tobit normal model
+#'mnormal <- tobit(form) # normal tobit model
 #'
 #'#Analysis under the normal tobit model
 #'
@@ -728,16 +728,21 @@ diag.tobit <-function(model,tau=0,npoints=0,dist="t",perturbation=c("cases","sca
 
 #' Cook's distance
 #' 
-#' @description A measure that combines the information of leverage and residual of the observation
+#' @description This function can be used to compute the Cook's distance.
 #' 
 #' @usage 
 #' function(model,tau=0, npoints=0, dist="t", plot=FALSE,xlab="Index",ylab="Cook distance",ylim=c(0,1),pch=19,cex=0.5,type="h",col="black")
 #' 
-#' @param model an object of class "tobit" as fitted by tobit.
-#' @param plot logical: if plot is TRUE, the estimate weight against MT residual are plotted and if FALSE the weights are printed.
-#' @param npoints the maximum number of points to be identified.
-#' @param type 1-character string giving the type of plot desired.
-#' @param dist assumed distribution for the dependent variable y.
+#'@param model an object of class "tobit" as fitted by tobit.
+#'@param plot logical: if plot is TRUE, the estimate weight against MT residual are plotted and if FALSE the weights are printed.
+#'@param npoints the maximum number of points to be identified.
+#'@param type 1-character string giving the type of plot desired.
+#'@param dist assumed distribution for the dependent variable y.
+#'@param xlab a label for the x axis, defaults to a description of x.
+#'@param ylab a label for the y axis, defaults to a description of y.
+#'@param col The colors for points. The default is black.
+#'@param pch a vector of plotting characters or symbols: see \code{\link{points}}. 
+#'@param cex a numerical vector giving the amount by which plotting characters and symbols should be scaled relative to the default.
 #'
 #'@references
 #' Barros, M., Galea, M., Leiva, V. and Santos-Neto, M. Generalized tobit models: Diagnostics and application in econometrics. (submitted manuscript)
@@ -753,7 +758,7 @@ diag.tobit <-function(model,tau=0,npoints=0,dist="t",perturbation=c("cases","sca
 #'
 #'form <- (y ~ x1+x2+x3+x4+x5)
 #'mt<- tobit(form, dist="t") #tobit-t model
-#'mnormal <- tobit(form) # tobit normal model
+#'mnormal <- tobit(form) # normal tobit model
 #'
 #'#Analysis under the normal tobit model
 #'

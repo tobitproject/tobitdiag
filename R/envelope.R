@@ -1,6 +1,6 @@
 #'Residuals
 #'
-#'@description Calculates martingale, deviance, martingale type residuals for tobit-t model.
+#'@description Calculates martingale, deviance, martingale type residuals for normal tobit and tobit-t models.
 #'
 #'@usage
 #'function(model,type,tau=0,dist ="t")
@@ -28,7 +28,7 @@
 #'
 #'form <- (y ~ x1+x2+x3+x4+x5)
 #'mt<- tobit(form, dist="t") #tobit-t model
-#'mnormal <- tobit(form) # tobit normal model
+#'mnormal <- tobit(form) # normal tobit model
 #'
 #'#Analysis under the normal tobit model
 #'rest <- residuals(mnormal,"martingalet",dist="normal")

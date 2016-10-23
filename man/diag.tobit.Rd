@@ -42,7 +42,7 @@ x5<- PSID1976$experience
 
 form <- (y ~ x1+x2+x3+x4+x5)
 mt<- tobit(form, dist="t") #tobit-t model
-mnormal <- tobit(form) # tobit normal model
+mnormal <- tobit(form) # normal tobit model
 
 #Analysis under the normal tobit model
 

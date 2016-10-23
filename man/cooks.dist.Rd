@@ -15,10 +15,20 @@ function(model,tau=0, npoints=0, dist="t", plot=FALSE,xlab="Index",ylab="Cook di
 
 \item{plot}{logical: if plot is TRUE, the estimate weight against MT residual are plotted and if FALSE the weights are printed.}
 
+\item{xlab}{a label for the x axis, defaults to a description of x.}
+
+\item{ylab}{a label for the y axis, defaults to a description of y.}
+
+\item{pch}{a vector of plotting characters or symbols: see \code{\link{points}}.}
+
+\item{cex}{a numerical vector giving the amount by which plotting characters and symbols should be scaled relative to the default.}
+
 \item{type}{1-character string giving the type of plot desired.}
+
+\item{col}{The colors for points. The default is black.}
 }
 \description{
-A measure that combines the information of leverage and residual of the observation
+This function can be used to compute the Cook's distance.
 }
 \examples{
  
@@ -32,7 +42,7 @@ x5<- PSID1976$experience
 
 form <- (y ~ x1+x2+x3+x4+x5)
 mt<- tobit(form, dist="t") #tobit-t model
-mnormal <- tobit(form) # tobit normal model
+mnormal <- tobit(form) # normal tobit model
 
 #Analysis under the normal tobit model
 

@@ -20,7 +20,7 @@ Possible type are: "deviance", "martingale" and "martingale type".}
 The returned object is a vector with one element for each subject.
 }
 \description{
-Calculates martingale, deviance, martingale type residuals for tobit-t model.
+Calculates martingale, deviance, martingale type residuals for normal tobit and tobit-t models.
 }
 \examples{
 data("PSID1976")
@@ -33,7 +33,7 @@ x5<- PSID1976$experience
 
 form <- (y ~ x1+x2+x3+x4+x5)
 mt<- tobit(form, dist="t") #tobit-t model
-mnormal <- tobit(form) # tobit normal model
+mnormal <- tobit(form) # normal tobit model
 
 #Analysis under the normal tobit model
 rest <- residuals(mnormal,"martingalet",dist="normal")
