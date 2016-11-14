@@ -7,7 +7,7 @@
 function(model,tau=0,npoints=0,dist="t",perturbation=c("cases","scale","response","explanatory"),l=NULL,ylim=c(0,0.40),plot.ci=FALSE,plot.dmax=FALSE,vecplot = c("theta","beta","sigma"))
 }
 \arguments{
-\item{model}{an object of class "tobit" as fitted by tobit.}
+\item{model}{an object of class "tobit" as fitted by tobit. The formula should be a symbolic description of a regression model of type \code{y ~ x1 + x2 + ... + xp}.}
 
 \item{tau}{is the censoring point. The default is zero.}
 

@@ -7,7 +7,7 @@
 function(model,type,tau=0,dist ="t")
 }
 \arguments{
-\item{model}{an object of class "tobit" as fitted by tobit.}
+\item{model}{an object of class "tobit" as fitted by tobit. The formula should be a symbolic description of a regression model of type \code{y ~ x1 + x2 + ... + xp}.}
 
 \item{type}{what type of residuals should be used. 
 Possible type are: "deviance", "martingale" and "martingale type".}

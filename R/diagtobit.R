@@ -5,7 +5,7 @@
 #'@usage
 #'function(model,tau=0,npoints=0,dist="t",perturbation=c("cases","scale","response","explanatory"),l=NULL,ylim=c(0,0.40),plot.ci=FALSE,plot.dmax=FALSE,vecplot = c("theta","beta","sigma")) 
 #'
-#'@param model an object of class "tobit" as fitted by tobit.
+#'@param model an object of class "tobit" as fitted by tobit. The formula should be a symbolic description of a regression model of type \code{y ~ x1 + x2 + ... + xp}.
 #'@param tau is the censoring point. The default is zero.
 #'@param npoints pthe maximum number of points to be identified.
 #'@param dist assumed distribution for the dependent variable y.
@@ -733,7 +733,7 @@ diag.tobit <-function(model,tau=0,npoints=0,dist="t",perturbation=c("cases","sca
 #' @usage 
 #' function(model,tau=0, npoints=0, dist="t", plot=FALSE,xlab="Index",ylab="Cook distance",ylim=c(0,1),pch=19,cex=0.5,type="h",col="black")
 #' 
-#'@param model an object of class "tobit" as fitted by tobit.
+#'@param model an object of class "tobit" as fitted by tobit. The formula should be a symbolic description of a regression model of type \code{y ~ x1 + x2 + ... + xp}.
 #'@param plot logical: if plot is TRUE, the estimate weight against MT residual are plotted and if FALSE the weights are printed.
 #'@param npoints the maximum number of points to be identified.
 #'@param type 1-character string giving the type of plot desired.
@@ -774,7 +774,8 @@ cooks.dist <- function(model,tau=0, npoints=0, dist="t", plot=FALSE,xlab="Index"
 
   if(dist=="t")
   {
-    theta <- as.vector(c(model$coef,model$scale))
+    theta <-c(model$coef,model$scale)
+    theta <-as.vector(theta)
     X    <- model.matrix(model)
     n    <-dim(X)[1]
     p    <-dim(X)[2]
@@ -836,7 +837,6 @@ cooks.dist <- function(model,tau=0, npoints=0, dist="t", plot=FALSE,xlab="Index"
     values[i]<-(1/(p+1))*t(theta-thetai)%*%inv.lpp%*%(theta-thetai)
     }
   } else{
-    model <- tobit(model)
     theta <-c(model$coef,model$scale)
     theta <-as.vector(theta)
     X    <-model.matrix(model)
@@ -922,7 +922,21 @@ cooks.dist <- function(model,tau=0, npoints=0, dist="t", plot=FALSE,xlab="Index"
 #' If two objects are provided, a data.frame with rows corresponding to the objects and columns 
 #' representing the number of 
 #' parameters in the model (df) and the AICc.
-#' 
+#'@examples  
+#'data("PSID1976")
+#'y<-PSID1976$wage
+#'x1<- PSID1976$age
+#'x2<- PSID1976$education
+#'x3<- PSID1976$youngkids
+#'x4<- PSID1976$oldkids
+#'x5<- PSID1976$experience
+#'
+#'form <- (y ~ x1+x2+x3+x4+x5)
+#'mt<- tobit(form, dist="t") #tobit-t model
+#'mnormal <- tobit(form) # normal tobit model
+#'
+#'AICc(mnormal,mt)
+#'
 #' @export
 
 AICc <- function (object,object1=NULL) 
@@ -947,7 +961,8 @@ AICc <- function (object,object1=NULL)
     aicc1 <- aic1 + ((2 * k1 * (k1 + 1))/(n - k1 - 1))
     
     out <- cbind(c(k,k1),c(aicc,aicc1))    
-    colnames(out) <- c("df","AICc")    
+    colnames(out) <- c("df","AICc") 
+    rownames(out) <- c(object$dist,object1$dist) 
     return(out[order(-out[2,],out[1,]),])
   }
 }
@@ -958,7 +973,7 @@ AICc <- function (object,object1=NULL)
 #' 
 #' @usage function(model,plot=FALSE,npoints=0)
 #' 
-#' @param model an object of class "tobit" as fitted by tobit.
+#'@param model an object of class "tobit" as fitted by tobit. The formula should be a symbolic description of a regression model of type \code{y ~ x1 + x2 + ... + xp}.
 #' @param plot logical: if plot is TRUE, the estimate weight against MT residual are plotted and if FALSE the weights are printed.
 #' @param npoints the maximum number of points to be identified.
 #' 

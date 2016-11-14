@@ -21,4 +21,21 @@ parameters in the model (df) and the AICc.
 \description{
 AICc is AIC with a correction for finite sample sizes.
 }
+\examples{
+ 
+data("PSID1976")
+y<-PSID1976$wage
+x1<- PSID1976$age
+x2<- PSID1976$education
+x3<- PSID1976$youngkids
+x4<- PSID1976$oldkids
+x5<- PSID1976$experience
+
+form <- (y ~ x1+x2+x3+x4+x5)
+mt<- tobit(form, dist="t") #tobit-t model
+mnormal <- tobit(form) # normal tobit model
+
+AICc(mnormal,mt)
+
+}
 

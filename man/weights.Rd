@@ -7,7 +7,7 @@
 function(model,plot=FALSE,npoints=0)
 }
 \arguments{
-\item{model}{an object of class "tobit" as fitted by tobit.}
+\item{model}{an object of class "tobit" as fitted by tobit. The formula should be a symbolic description of a regression model of type \code{y ~ x1 + x2 + ... + xp}.}
 
 \item{plot}{logical: if plot is TRUE, the estimate weight against MT residual are plotted and if FALSE the weights are printed.}
 

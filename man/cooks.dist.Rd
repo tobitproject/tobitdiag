@@ -7,7 +7,7 @@
 function(model,tau=0, npoints=0, dist="t", plot=FALSE,xlab="Index",ylab="Cook distance",ylim=c(0,1),pch=19,cex=0.5,type="h",col="black")
 }
 \arguments{
-\item{model}{an object of class "tobit" as fitted by tobit.}
+\item{model}{an object of class "tobit" as fitted by tobit. The formula should be a symbolic description of a regression model of type \code{y ~ x1 + x2 + ... + xp}.}
 
 \item{npoints}{the maximum number of points to be identified.}
 

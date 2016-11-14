@@ -7,7 +7,7 @@
 function(model,res="martingalet",nboot = 19,alpha=0.05,tau=0,intercept = "TRUE",dist="t",col="gray80",xlab="Q",ylab="R")
 }
 \arguments{
-\item{model}{an object of class "tobit" as fitted by tobit.}
+\item{model}{an object of class "tobit" as fitted by tobit. The formula should be a symbolic description of a regression model of type \code{y ~ x1 + x2 + ... + xp}.}
 
 \item{res}{character string indicating the type of residual 
 desired. Possible values are "deviance", "martingale" and "martingale type".}

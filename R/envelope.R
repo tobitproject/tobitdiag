@@ -5,7 +5,7 @@
 #'@usage
 #'function(model,type,tau=0,dist ="t")
 #'
-#'@param model an object of class "tobit" as fitted by tobit.
+#'@param model an object of class "tobit" as fitted by tobit. The formula should be a symbolic description of a regression model of type \code{y ~ x1 + x2 + ... + xp}.
 #'@param type what type of residuals should be used. 
 #'Possible type are: "deviance", "martingale" and "martingale type". 
 #'@param tau is the censoring point. The default is zero.
@@ -87,7 +87,7 @@ residuals <- function(model,type,tau=0,dist ="t")
 #'@usage
 #'function(model,res="martingalet",nboot = 19,alpha=0.05,tau=0,intercept = "TRUE",dist="t",col="gray80",xlab="Q",ylab="R")
 #'
-#'@param model an object of class "tobit" as fitted by tobit.
+#'@param model an object of class "tobit" as fitted by tobit. The formula should be a symbolic description of a regression model of type \code{y ~ x1 + x2 + ... + xp}.
 #'@param res character string indicating the type of residual 
 #'desired. Possible values are "deviance", "martingale" and "martingale type".
 #'@param nboot Number of simulated point patterns to be generated when computing the envelopes.
