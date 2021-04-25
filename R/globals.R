@@ -1,0 +1,1 @@
+utils::globalVariables(c('e1','e2','med','ones'))

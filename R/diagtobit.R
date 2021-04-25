@@ -1,13 +1,20 @@
-#'Local Influence
+#'@name tobitdiag
+#'
+#'@aliases diag.tobit
+#'
+#'@title Local Influence
 #'
 #'@description Local influence plots for tobit model.
 #'
 #'@usage
-#'function(model,tau=0,npoints=0,dist="t",perturbation=c("cases","scale","response","explanatory"),l=NULL,ylim=c(0,0.40),plot.ci=FALSE,plot.dmax=FALSE,vecplot = c("theta","beta","sigma")) 
+#'diag.tobit(model,tau=0, npoints = 0,dist="t",
+#'perturbation=c("cases","scale","response","explanatory"),
+#'l=NULL,ylim=c(0,0.40),plot.ci=FALSE,plot.dmax=FALSE,
+#'vecplot = c("theta","beta","sigma")) 
 #'
 #'@param model an object of class "tobit" as fitted by tobit. The formula should be a symbolic description of a regression model of type \code{y ~ x1 + x2 + ... + xp}.
 #'@param tau is the censoring point. The default is zero.
-#'@param npoints pthe maximum number of points to be identified.
+#'@param npoints p the maximum number of points to be identified.
 #'@param dist assumed distribution for the dependent variable y.
 #'@param perturbation types of perturbation schemes for to be used.
 #'@param l default is NULL. Necessary for the explanatory variable perturbation.
@@ -53,44 +60,72 @@
 #'
 #'#Analysis under the tobit t model
 #'
-#'diag.tobit(mt,npoints = 0,dist="t",perturbation = "cases",plot.ci=TRUE,vecplot="theta") #normal curvature for theta under case-weight perturbation
-#'diag.tobit(mt,npoints = 0,dist="t",perturbation = "cases",plot.ci=TRUE,vecplot="beta") #normal curvature for beta under case-weight perturbation
-#'diag.tobit(mt,npoints = 0,dist="t",perturbation = "cases",plot.ci=TRUE,vecplot="sigma") #normal curvature for sigma under case-weight perturbation
+#'diag.tobit(mt,npoints = 0,dist="t",
+#'perturbation = "cases",plot.ci=TRUE,vecplot="theta") 
+#'#normal curvature for theta under case-weight perturbation
+#'diag.tobit(mt,npoints = 0,dist="t",
+#'perturbation = "cases",plot.ci=TRUE,vecplot="beta") 
+#'#normal curvature for beta under case-weight perturbation
+#'diag.tobit(mt,npoints = 0,dist="t",
+#'perturbation = "cases",plot.ci=TRUE,vecplot="sigma") 
+#'#normal curvature for sigma under case-weight perturbation
 #'
-#'diag.tobit(mt,npoints = 0,dist="t",perturbation = "response",plot.ci=TRUE,vecplot="theta") #normal curvature for theta under response perturbation
-#'diag.tobit(mt,npoints = 0,dist="t",perturbation = "response",plot.ci=TRUE,vecplot="beta") #normal curvature for beta under response perturbation
-#'diag.tobit(mt,npoints = 0,dist="t",perturbation = "response",plot.ci=TRUE,vecplot="sigma") #normal curvature for sigma under response perturbation
+#'diag.tobit(mt,npoints = 0,dist="t",
+#'perturbation = "response",plot.ci=TRUE,vecplot="theta") 
+#'#normal curvature for theta under response perturbation
+#'diag.tobit(mt,npoints = 0,dist="t",
+#'perturbation = "response",plot.ci=TRUE,vecplot="beta") 
+#'#normal curvature for beta under response perturbation
+#'diag.tobit(mt,npoints = 0,dist="t",
+#'perturbation = "response",plot.ci=TRUE,vecplot="sigma") 
+#'#normal curvature for sigma under response perturbation
 #'
-#'diag.tobit(mt,npoints = 2,dist="t",perturbation = "scale",plot.ci=TRUE,vecplot="theta") #normal curvature for theta under scale perturbation
-#'diag.tobit(mt,npoints = 2,dist="t",perturbation = "scale",plot.ci=TRUE,vecplot="beta") #normal curvature for beta under scale perturbation
-#'diag.tobit(mt,npoints = 2,dist="t",perturbation = "scale",plot.ci=TRUE,vecplot="sigma") #normal curvature for sigma under scale perturbation
+#'diag.tobit(mt,npoints = 2,dist="t",
+#'perturbation = "scale",plot.ci=TRUE,vecplot="theta") 
+#'#normal curvature for theta under scale perturbation
+#'diag.tobit(mt,npoints = 2,dist="t",
+#'perturbation = "scale",plot.ci=TRUE,vecplot="beta") 
+#'#normal curvature for beta under scale perturbation
+#'diag.tobit(mt,npoints = 2,dist="t",
+#'perturbation = "scale",plot.ci=TRUE,vecplot="sigma") 
+#'#normal curvature for sigma under scale perturbation
 #'
-#'diag.tobit(mt,npoints = 0,dist="t",perturbation = "explanatory",l=2,plot.ci=TRUE,vecplot="theta") #normal curvature for theta under explanatory perturbation
-#'diag.tobit(mt,npoints = 0,dist="t",perturbation = "explanatory",l=2,plot.ci=TRUE,vecplot="beta") #normal curvature for beta under explanatory perturbation
-#'diag.tobit(mt,npoints = 0,dist="t",perturbation = "explanatory",l=2,plot.ci=TRUE,vecplot="sigma") #normal curvature for sigma under explanatory perturbation
+#'diag.tobit(mt,npoints = 0,dist="t",
+#'perturbation = "explanatory",l=2,plot.ci=TRUE,vecplot="theta") 
+#'#normal curvature for theta under explanatory perturbation
+#'diag.tobit(mt,npoints = 0,dist="t",
+#'perturbation = "explanatory",l=2,plot.ci=TRUE,vecplot="beta") 
+#'#normal curvature for beta under explanatory perturbation
+#'diag.tobit(mt,npoints = 0,dist="t",
+#'perturbation = "explanatory",l=2,plot.ci=TRUE,vecplot="sigma") 
+#'#normal curvature for sigma under explanatory perturbation
 #'
+#'
+#'@importFrom pracma ones
 #'@export
 
-diag.tobit <-function(model,tau=0,npoints=0,dist="t",perturbation=c("cases","scale","response","explanatory"),l=NULL,ylim=c(0,0.40),plot.ci=FALSE,plot.dmax=FALSE,vecplot = c("theta","beta","sigma"))
+diag.tobit <- function(model, tau=0, npoints = 0, dist = "t", perturbation=c("cases","scale","response","explanatory"),l=NULL,ylim=c(0,0.40),plot.ci=FALSE,plot.dmax=FALSE,vecplot = c("theta","beta","sigma"))
 {
+  if (summary(model)$n[2] != 0) cens <- 'left' else cens <- 'right'
   
-  if(dist=="t")
+  
+  if (dist == "t")
   {
-    X <-model.matrix(model)
-    p=ncol(X) #number parameters 
-    n=nrow(X) #number observations 
+    X <- model.matrix(model)
+    p <- ncol(X) #number parameters 
+    n <- nrow(X) #number observations 
     nu <- model$parms
     y  <- as.numeric(model$y)[1:n]
-    c  <- (1*(y>tau))
+    if (cens == 'left') c  <- (1*(y > tau)) else c  <- (1*(y <= tau)) 
     muhat <- model$linear.predictors
     sigmahat <- model$scale
-    deltahat <-(y-muhat)/sigmahat
-    phi         <- dt(deltahat,df=nu)
-    Phi         <- pt(deltahat,df=nu)
+    deltahat <- (y - muhat)/sigmahat
+    phi         <- dt(deltahat,df = nu)
+    Phi         <- pt(deltahat,df = nu)
     Wdelta      <- phi/Phi
-    const <- gamma((nu+1)/2)/((gamma(nu/2)*sqrt(pi*nu)))
-    deriv_phi <- -const*((nu+1)/nu)*deltahat*((1+((deltahat^2)/nu))^(-(nu+3)/2))
-    deriv_Wdelta <- (deriv_phi/Phi)+((phi/Phi)^2)
+    const <- gamma((nu + 1)/2)/((gamma(nu/2)*sqrt(pi*nu)))
+    deriv_phi <- -const*((nu + 1)/nu)*deltahat*((1 + ((deltahat^2)/nu))^(-(nu + 3)/2))
+    deriv_Wdelta <- (deriv_phi/Phi) + ((phi/Phi)^2)
     
     ##############################################Lsigmasigma####################################
     parte1 <- (1/(sigmahat^2))*sum((1-c)*(2*Wdelta*deltahat + (deltahat^2)*deriv_Wdelta))
@@ -123,21 +158,21 @@ diag.tobit <-function(model,tau=0,npoints=0,dist="t",perturbation=c("cases","sca
 
     
     #Esquema de perturba??o pondera??o de casos
-    Lsigma= Hessian[p+1,p+1]
-    Lbeta=Hessian[1:p,1:p]
-    b11=cbind(matrix(0, p, p), matrix(0, p, 1))
-    b12=cbind(matrix(0, 1, p), -Lsigma^(-1))
-    B1= rbind(b11, b12)  #parameter beta
-    b211 =cbind(-solve(Lbeta), matrix(0, p, 1))
-    b212= cbind(matrix(0, 1, p), matrix(0, 1, 1))
-    B2=rbind(b211,b212)  # parameter delta
+    Lsigma <- Hessian[p + 1,p + 1]
+    Lbeta <- Hessian[1:p,1:p]
+    b11 <- cbind(matrix(0, p, p), matrix(0, p, 1))
+    b12 <- cbind(matrix(0, 1, p), -Lsigma^(-1))
+    B1 <- rbind(b11, b12)  #parameter beta
+    b211 <- cbind(-solve(Lbeta), matrix(0, p, 1))
+    b212 <- cbind(matrix(0, 1, p), matrix(0, 1, 1))
+    B2 <- rbind(b211,b212)  # parameter delta
     
-    b311 =cbind(matrix(0, p, p), matrix(0, p, 1))
-    b312= cbind(matrix(0, 1, p), matrix(0, 1, 1))
-    B3=rbind(b311,b312)  # parameter theta
+    b311 <- cbind(matrix(0, p, p), matrix(0, p, 1))
+    b312 <- cbind(matrix(0, 1, p), matrix(0, 1, 1))
+    B3 <- rbind(b311,b312)  # parameter theta
     
     
-    if(perturbation == "cases")
+    if (perturbation == "cases")
     {
       #C?lculo da matriz delta
       bi           <- -(1-c)*(1/sigmahat)*Wdelta+ c*(1/sigmahat)*((nu+1)/nu)*deltahat/(1+((deltahat^2)/nu))
@@ -151,28 +186,28 @@ diag.tobit <-function(model,tau=0,npoints=0,dist="t",perturbation=c("cases","sca
       
       # C?lculo dos autovalores e autovetores da matriz F
       
-      Lmax<-eigen(F0,symmetric=TRUE)$val[1]
-      dmax<-eigen(F0,symmetric=TRUE)$vec[,1]
-      Lmaxb<-eigen(F1,symmetric=TRUE)$val[1]
-      dmaxb<-eigen(F1,symmetric=TRUE)$vec[,1]
-      Lmaxs<-eigen(F2,symmetric=TRUE)$val[1]
-      dmaxs<-eigen(F2,symmetric=TRUE)$vec[,1]
+      Lmax  <- eigen(F0,symmetric = TRUE)$val[1]
+      dmax  <- eigen(F0,symmetric = TRUE)$vec[,1]
+      Lmaxb <- eigen(F1,symmetric = TRUE)$val[1]
+      dmaxb <- eigen(F1,symmetric = TRUE)$vec[,1]
+      Lmaxs <- eigen(F2,symmetric = TRUE)$val[1]
+      dmaxs <- eigen(F2,symmetric = TRUE)$vec[,1]
       # Influ?ncia Local Total
       
-      Ci<- 2*abs(diag(F0))
-      Ci<- Ci/sum(Ci)
+      Ci <- 2*abs(diag(F0))
+      Ci <- Ci/sum(Ci)
       
-      Cib<- 2*abs(diag(F1))
-      Cib<- Cib/sum(Cib)
+      Cib <- 2*abs(diag(F1))
+      Cib <- Cib/sum(Cib)
       
-      Cis<- 2*abs(diag(F2))
-      Cis<- Cis/sum(Cis)
+      Cis <- 2*abs(diag(F2))
+      Cis <- Cis/sum(Cis)
       #ponto de corte
-      corte1<-2*mean(Ci)
-      corte2<-2*mean(Cib)
-      corte3<-2*mean(Cis)
+      corte1 <-2*mean(Ci)
+      corte2 <-2*mean(Cib)
+      corte3 <-2*mean(Cis)
       
-    } else if(perturbation == "scale"){
+    } else if (perturbation == "scale") {
       #C?lculo da matriz delta
       bi           <- -(1-c)*(1/(2*sigmahat))*(Wdelta+deltahat*deriv_Wdelta) + c*((nu+1)/(nu*sigmahat))*( deltahat/( 1+( (deltahat^2)/nu) ) - ((deltahat^3)/(nu*(1+(deltahat^2)/nu)^2) ))
       b            <- as.vector(bi)								   
@@ -185,37 +220,37 @@ diag.tobit <-function(model,tau=0,npoints=0,dist="t",perturbation=c("cases","sca
       
       # C?lculo dos autovalores e autovetores da matriz F
       
-      Lmax<-eigen(F0,symmetric=TRUE)$val[1]
-      dmax<-eigen(F0,symmetric=TRUE)$vec[,1]
-      Lmaxb<-eigen(F1,symmetric=TRUE)$val[1]
-      dmaxb<-eigen(F1,symmetric=TRUE)$vec[,1]
-      Lmaxs<-eigen(F2,symmetric=TRUE)$val[1]
-      dmaxs<-eigen(F2,symmetric=TRUE)$vec[,1]
+      Lmax  <-eigen(F0,symmetric=TRUE)$val[1]
+      dmax  <-eigen(F0,symmetric=TRUE)$vec[,1]
+      Lmaxb <-eigen(F1,symmetric=TRUE)$val[1]
+      dmaxb <-eigen(F1,symmetric=TRUE)$vec[,1]
+      Lmaxs <-eigen(F2,symmetric=TRUE)$val[1]
+      dmaxs <-eigen(F2,symmetric=TRUE)$vec[,1]
       # Influ?ncia Local Total
       
       
-      Ci<- 2*abs(diag(F0))
-      Ci<- Ci/sum(Ci)
+      Ci <- 2*abs(diag(F0))
+      Ci <- Ci/sum(Ci)
       
-      Cib<- 2*abs(diag(F1))
-      Cib<- Cib/sum(Cib)
+      Cib <- 2*abs(diag(F1))
+      Cib <- Cib/sum(Cib)
       
-      Cis<- 2*abs(diag(F2))
-      Cis<- Cis/sum(Cis)
+      Cis <- 2*abs(diag(F2))
+      Cis <- Cis/sum(Cis)
       #ponto de corte
-      corte1<-2*mean(Ci)
-      corte2<-2*mean(Cib)
-      corte3<-2*mean(Cis)
+      corte1 <- 2*mean(Ci)
+      corte2 <- 2*mean(Cib)
+      corte3 <- 2*mean(Cis)
       
 
-    } else if(perturbation == "response"){
+    } else if (perturbation == "response") {
       #C?lculo da matriz delta
-      sy<- sd(y)
-      bi<- -(1-c)*0+c*((sy*(nu+1))/(nu*(sigmahat^2)))*(1/(1+( (deltahat^2)/nu))-(2*(deltahat^2))/(nu*(1+((deltahat^2)/nu))^2))
-      b <- as.vector(bi)
-      firesp<- -(1-c)*0+c*2*sy*((nu+1)/(nu*sigmahat*sigmahat))*(deltahat/(1+(deltahat^2)/nu)- (deltahat^3)/(nu*((1+(deltahat^2)/nu)^2) )  )
-      fi<- as.vector(firesp)
-      deltabeta    <- t(X)%*%diag(b)
+      sy <- sd(y)
+      bi <- -(1-c)*0+c*((sy*(nu+1))/(nu*(sigmahat^2)))*(1/(1+( (deltahat^2)/nu))-(2*(deltahat^2))/(nu*(1+((deltahat^2)/nu))^2))
+      b  <- as.vector(bi)
+      firesp <- -(1-c)*0+c*2*sy*((nu+1)/(nu*sigmahat*sigmahat))*(deltahat/(1+(deltahat^2)/nu)- (deltahat^3)/(nu*((1+(deltahat^2)/nu)^2) )  )
+      fi <- as.vector(firesp)
+      deltabeta    <- t(X) %*% diag(b)
       matrixdelta  <- rbind(deltabeta,t(fi))
       F0            <- t(matrixdelta)%*%(invobservmatrix)%*%matrixdelta #matriz F
       F1 <- t(matrixdelta)%*%(invobservmatrix - B1)%*%matrixdelta #matriz F beta
@@ -223,26 +258,26 @@ diag.tobit <-function(model,tau=0,npoints=0,dist="t",perturbation=c("cases","sca
       
       # C?lculo dos autovalores e autovetores da matriz F
       
-      Lmax<-eigen(F0,symmetric=TRUE)$val[1]
-      dmax<-eigen(F0,symmetric=TRUE)$vec[,1]
-      Lmaxb<-eigen(F1,symmetric=TRUE)$val[1]
-      dmaxb<-eigen(F1,symmetric=TRUE)$vec[,1]
-      Lmaxs<-eigen(F2,symmetric=TRUE)$val[1]
-      dmaxs<-eigen(F2,symmetric=TRUE)$vec[,1]
+      Lmax <- eigen(F0,symmetric=TRUE)$val[1]
+      dmax <- eigen(F0,symmetric=TRUE)$vec[,1]
+      Lmaxb <- eigen(F1,symmetric=TRUE)$val[1]
+      dmaxb <- eigen(F1,symmetric=TRUE)$vec[,1]
+      Lmaxs <- eigen(F2,symmetric=TRUE)$val[1]
+      dmaxs <- eigen(F2,symmetric=TRUE)$vec[,1]
       # Influ?ncia Local Total
       
-      Ci<- 2*abs(diag(F0))
-      Ci<- Ci/sum(Ci)
+      Ci <- 2*abs(diag(F0))
+      Ci <- Ci/sum(Ci)
       
-      Cib<- 2*abs(diag(F1))
-      Cib<- Cib/sum(Cib)
+      Cib <- 2*abs(diag(F1))
+      Cib <- Cib/sum(Cib)
       
-      Cis<- 2*abs(diag(F2))
-      Cis<- Cis/sum(Cis)
+      Cis <- 2*abs(diag(F2))
+      Cis <- Cis/sum(Cis)
       #ponto de corte
-      corte1<-2*mean(Ci)
-      corte2<-2*mean(Cib)
-      corte3<-2*mean(Cis)
+      corte1 <-2*mean(Ci)
+      corte2 <-2*mean(Cib)
+      corte3 <-2*mean(Cis)
 
     } else{
       #C?lculo da matriz delta
@@ -264,32 +299,32 @@ diag.tobit <-function(model,tau=0,npoints=0,dist="t",perturbation=c("cases","sca
       
       # C?lculo dos autovalores e autovetores da matriz F
       
-      Lmax<-eigen(F0,symmetric=TRUE)$val[1]
-      dmax<-eigen(F0,symmetric=TRUE)$vec[,1]
-      Lmaxb<-eigen(F1,symmetric=TRUE)$val[1]
-      dmaxb<-eigen(F1,symmetric=TRUE)$vec[,1]
-      Lmaxs<-eigen(F2,symmetric=TRUE)$val[1]
-      dmaxs<-eigen(F2,symmetric=TRUE)$vec[,1]
+      Lmax <- eigen(F0,symmetric=TRUE)$val[1]
+      dmax <- eigen(F0,symmetric=TRUE)$vec[,1]
+      Lmaxb <- eigen(F1,symmetric=TRUE)$val[1]
+      dmaxb <- eigen(F1,symmetric=TRUE)$vec[,1]
+      Lmaxs <- eigen(F2,symmetric=TRUE)$val[1]
+      dmaxs <- eigen(F2,symmetric=TRUE)$vec[,1]
       
-      Ci<- 2*abs(diag(F0))
-      Ci<- Ci/sum(Ci)
+      Ci <- 2*abs(diag(F0))
+      Ci <- Ci/sum(Ci)
       
-      Cib<- 2*abs(diag(F1))
-      Cib<- Cib/sum(Cib)
+      Cib <- 2*abs(diag(F1))
+      Cib <- Cib/sum(Cib)
       
-      Cis<- 2*abs(diag(F2))
-      Cis<- Cis/sum(Cis)
+      Cis <- 2*abs(diag(F2))
+      Cis <- Cis/sum(Cis)
       #ponto de corte
-      corte1<-2*mean(Ci)
-      corte2<-2*mean(Cib)
-      corte3<-2*mean(Cis)
+      corte1 <-2*mean(Ci)
+      corte2 <-2*mean(Cib)
+      corte3 <-2*mean(Cis)
       
     }
     
-    if(plot.ci == TRUE && perturbation != "explanatory" )
+    if (plot.ci == TRUE && perturbation != "explanatory" )
     {
       
-      if(vecplot=="theta")
+      if (vecplot == "theta")
       {
         dev.new()
         par(mar=c(4.0,4.0,0.1,0.1))
@@ -383,19 +418,19 @@ diag.tobit <-function(model,tau=0,npoints=0,dist="t",perturbation=c("cases","sca
     }
   } else{
     X <- model.matrix(model)
-    p=ncol(X) #number parameters 
-    n=nrow(X) #number observations 
+    p <- ncol(X) #number parameters 
+    n <- nrow(X) #number observations 
     nu <- model$parms
     y  <- as.numeric(model$y)[1:n]
-    c  <- (1*(y>tau))
+    if (cens == 'left') c  <- (1*(y > tau)) else c  <- (1*(y <= tau)) 
     muhat <- model$linear.predictors
     sigmahat <- model$scale
-    delta <- (y-muhat)/sigmahat
+    delta <- (y - muhat)/sigmahat
     phi         <- dnorm(delta)
     Phi         <- pnorm(delta)
     Wdelta      <- phi/Phi
     deriv_phi   <- (-delta/sqrt(2*pi))*exp(-(delta^2)/2)
-    deriv_Wdelta<- (deriv_phi/(1-Phi))+((phi/(1-Phi))^2) 
+    deriv_Wdelta <- (deriv_phi/(1 - Phi)) + ((phi/(1 - Phi))^2) 
     
     
     #############################################################################################
@@ -411,8 +446,6 @@ diag.tobit <-function(model,tau=0,npoints=0,dist="t",perturbation=c("cases","sca
     #Quantidades para obter Lbetabeta
     
     #C?lculo de V
-    
-    
     parte1       <- (1-c)*(1/(sigmahat^2))*deriv_Wdelta	#Parte com censura
     parte2       <- (1/(sigmahat^2))*c  #Parte sem censura
     vi           <- parte1-parte2
@@ -420,11 +453,8 @@ diag.tobit <-function(model,tau=0,npoints=0,dist="t",perturbation=c("cases","sca
     V            <- diag(v)
     
     #Lbetabeta
-    
-    
-    Lbeta        <- t(X)%*%V%*%X
-    
-    
+    Lbeta        <- t(X) %*% V %*% X
+
     #Quantidades para obter Lbetasigma
     
     #C?lculo de h
@@ -435,7 +465,7 @@ diag.tobit <-function(model,tau=0,npoints=0,dist="t",perturbation=c("cases","sca
     
     #Lbetasigma
     
-    Lbetasigma   <- t(X)%*%hi
+    Lbetasigma   <- t(X) %*% hi
     
     # Matriz de informa??o observada
     
@@ -457,19 +487,19 @@ diag.tobit <-function(model,tau=0,npoints=0,dist="t",perturbation=c("cases","sca
     
     
     #C?lculo da matriz delta
-    Lsigma= Hessian[p+1,p+1]
-    Lbeta=Hessian[1:p,1:p]
-    b11=cbind(matrix(0, p, p), matrix(0, p, 1))
-    b12=cbind(matrix(0, 1, p), -Lsigma^(-1))
-    B1= rbind(b11, b12)  #parameter beta
-    b211 =cbind(-solve(Lbeta), matrix(0, p, 1))
-    b212= cbind(matrix(0, 1, p), matrix(0, 1, 1))
-    B2=rbind(b211,b212)  # parameter delta
+    Lsigma <- Hessian[p+1,p+1]
+    Lbeta <- Hessian[1:p,1:p]
+    b11 <- cbind(matrix(0, p, p), matrix(0, p, 1))
+    b12 <- cbind(matrix(0, 1, p), -Lsigma^(-1))
+    B1 <- rbind(b11, b12)  #parameter beta
+    b211 <- cbind(-solve(Lbeta), matrix(0, p, 1))
+    b212 <- cbind(matrix(0, 1, p), matrix(0, 1, 1))
+    B2 <- rbind(b211,b212)  # parameter delta
     
 
     
     ################# New structure of function ################
-    if(perturbation == "cases")
+    if (perturbation == "cases")
     {
       #C?lculo da matriz delta
       bi           <- -(1-c)*(1/sigmahat)*Wdelta+c*(1/sigmahat)*delta
@@ -697,7 +727,7 @@ diag.tobit <-function(model,tau=0,npoints=0,dist="t",perturbation=c("cases","sca
     }
     else if(plot.dmax == TRUE && perturbation == "explanatory")
     {
-      if(vecplot=="theta")
+      if(vecplot == "theta")
       {
         dev.new()
         par(mar=c(4.0,4.0,0.1,0.1))
@@ -726,12 +756,16 @@ diag.tobit <-function(model,tau=0,npoints=0,dist="t",perturbation=c("cases","sca
 }
 
 
-#' Cook's distance
+#'@name tobitdiag
+#'
+#'@aliases cooks.dist
 #' 
-#' @description This function can be used to compute the Cook's distance.
+#'@description This function can be used to compute the Cook's distance.
 #' 
-#' @usage 
-#' function(model,tau=0, npoints=0, dist="t", plot=FALSE,xlab="Index",ylab="Cook distance",ylim=c(0,1),pch=19,cex=0.5,type="h",col="black")
+#'@usage 
+#'cooks.dist(model, tau=0, npoints = 0, dist="t", 
+#'plot=FALSE, xlab = "Index", ylab="Cook distance",
+#'ylim=c(0,1), pch = 19, cex = 0.5, type="h", col="black")
 #' 
 #'@param model an object of class "tobit" as fitted by tobit. The formula should be a symbolic description of a regression model of type \code{y ~ x1 + x2 + ... + xp}.
 #'@param plot logical: if plot is TRUE, the estimate weight against MT residual are plotted and if FALSE the weights are printed.
@@ -772,15 +806,17 @@ diag.tobit <-function(model,tau=0,npoints=0,dist="t",perturbation=c("cases","sca
 cooks.dist <- function(model,tau=0, npoints=0, dist="t", plot=FALSE,xlab="Index",ylab="Cook distance",ylim=c(0,1),pch=19,cex=0.5,type="h",col="black")
   {
 
-  if(dist=="t")
+  if (summary(model)$n[2] != 0) cens <- 'left' else cens <- 'right'
+  
+  if (dist == "t")
   {
-    theta <-c(model$coef,model$scale)
-    theta <-as.vector(theta)
+    theta <- c(model$coef,model$scale)
+    theta <- as.vector(theta)
     X    <- model.matrix(model)
-    n    <-dim(X)[1]
-    p    <-dim(X)[2]
+    n    <- dim(X)[1]
+    p    <- dim(X)[2]
     y  <- as.numeric(model$y)[1:n]
-    c  <- (1*(y>tau))
+    if (cens == 'left') c  <- (1*(y > tau)) else c  <- (1*(y <= tau)) 
     #Lsigmasigma
     nu <- model$parms
     muhat <- model$linear.predictors
@@ -832,26 +868,26 @@ cooks.dist <- function(model,tau=0, npoints=0, dist="t", plot=FALSE,xlab="Index"
    for(i in 1:n)
     {
     datai <- as.data.frame(data0[-i,])
-    fit <- tobit(formula(form),dist="t",data=datai)
-    thetai<- c(fit$coef,fit$scale)
-    values[i]<-(1/(p+1))*t(theta-thetai)%*%inv.lpp%*%(theta-thetai)
+    if (cens == 'left') fit <- tobit(formula(form), left = tau, dist = "t", data = datai) else fit <- tobit(formula(form), right = tau, dist = "t", data = datai)
+    thetai <- c(fit$coef,fit$scale)
+    values[i] <- (1/(p+1))*t(theta-thetai)%*%inv.lpp%*%(theta-thetai)
     }
   } else{
-    theta <-c(model$coef,model$scale)
-    theta <-as.vector(theta)
-    X    <-model.matrix(model)
-    n    <-dim(X)[1]
-    p    <-dim(X)[2]
+    theta <- c(model$coef,model$scale)
+    theta <- as.vector(theta)
+    X    <- model.matrix(model)
+    n    <- dim(X)[1]
+    p    <- dim(X)[2]
     y  <- as.numeric(model$y)[1:n]
-    c  <- (1*(y>tau))
+    if (cens == 'left') c  <- (1*(y > tau)) else c  <- (1*(y <= tau)) 
     muhat <- model$linear.predictors
     sigmahat <- model$scale
-    delta <- (y-muhat)/sigmahat
+    delta <- (y - muhat)/sigmahat
     phi         <- dnorm(delta)
     Phi         <- pnorm(delta)
     Wdelta      <- phi/Phi
     deriv_phi   <- (-delta/sqrt(2*pi))*exp(-(delta^2)/2)
-    deriv_Wdelta<- (deriv_phi/(1-Phi))+((phi/(1-Phi))^2)
+    deriv_Wdelta <- (deriv_phi/(1-Phi))+((phi/(1-Phi))^2)
     
     form0 <- paste("x",1:(p-1),collapse = "+",sep = "")
     form <- paste("y", form0, sep = "~")
@@ -887,12 +923,12 @@ cooks.dist <- function(model,tau=0, npoints=0, dist="t", plot=FALSE,xlab="Index"
     inv.lpp <- -solve(observmatrix)
     
     values <- vector()
-    for(i in 1:n)
+    for (i in 1:n)
     {
       datai <- as.data.frame(data0[-i,])
-      fit <- tobit(formula(form),data=datai)
-      thetai<- c(fit$coef,fit$scale)
-      values[i]<-(1/(p+1))*t(theta-thetai)%*%inv.lpp%*%(theta-thetai)     
+      if (cens == 'left') fit <- tobit(formula(form), left = tau, data = datai) else fit <- tobit(formula(form), right = tau, data = datai)
+      thetai <- c(fit$coef,fit$scale)
+      values[i] <-(1/(p+1))*t(theta-thetai)%*%inv.lpp%*%(theta-thetai)     
   }
 }
   if(plot==TRUE)
@@ -906,17 +942,17 @@ cooks.dist <- function(model,tau=0, npoints=0, dist="t", plot=FALSE,xlab="Index"
 
 
 
-###################################################
-#information criterions
-####################################################
-#' Akaike's An Information Criterion
+#'@name tobitdiag
 #' 
-#' AICc is AIC with a correction for finite sample sizes.
+#'@aliases AICc
+#'
+#'@description AICc is AIC with a correction for finite sample sizes.
+#'@usage   AICc(object, object1 = NULL)
+#'    
+#'@param object a fitted model object for which there exists a logLik method to extract the corresponding log-likelihood, or an object inheriting from class logLik.
+#'@param object1 optionally more fitted model objects.
 #' 
-#' @param object a fitted model object for which there exists a logLik method to extract the corresponding log-likelihood, or an object inheriting from class logLik.
-#' @param object1 optionally more fitted model objects.
-#' 
-#' @return 
+#'@return 
 #' If just one object is provided, a numeric value with the corresponding AICc.
 #' 
 #' If two objects are provided, a data.frame with rows corresponding to the objects and columns 
@@ -939,9 +975,9 @@ cooks.dist <- function(model,tau=0, npoints=0, dist="t", plot=FALSE,xlab="Index"
 #'
 #' @export
 
-AICc <- function (object,object1=NULL) 
+AICc <- function(object, object1 = NULL) 
 {
-  if(is.null(object1))
+  if (is.null(object1))
   {
     aic <- AIC(object)
     if (!is.numeric(aic)) 
@@ -967,15 +1003,17 @@ AICc <- function (object,object1=NULL)
   }
 }
 
-#' weights
+#' @name tobitdiag
 #' 
-#' @description Estimate weight in the maximum likelihood estimation procedure under the tobit-t model.
+#'@aliases weights
 #' 
-#' @usage function(model,plot=FALSE,npoints=0)
+#'@description Estimate weight in the maximum likelihood estimation procedure under the tobit-t model.
 #' 
-#'@param model an object of class "tobit" as fitted by tobit. The formula should be a symbolic description of a regression model of type \code{y ~ x1 + x2 + ... + xp}.
-#' @param plot logical: if plot is TRUE, the estimate weight against MT residual are plotted and if FALSE the weights are printed.
-#' @param npoints the maximum number of points to be identified.
+#'@usage weights(model, plot = FALSE, npoints = 0)
+#' 
+#'@param model an object of class \code{tobit} as fitted by tobit. The formula should be a symbolic description of a regression model of type \code{y ~ x1 + x2 + ... + xp}.
+#'@param plot logical: if plot is TRUE, the estimate weight against MT residual are plotted and if FALSE the weights are printed.
+#'@param npoints the maximum number of points to be identified.
 #' 
 #' @references 
 #' 
@@ -1000,26 +1038,26 @@ AICc <- function (object,object1=NULL)
 #' 
 #' @export
 
-weights <- function(model,plot=FALSE,npoints=0)
+weights <- function(model, plot = FALSE, npoints = 0)
 {
-  X <-model.matrix(model)
-  n=nrow(X) #number observations 
+  X <- model.matrix(model)
+  n <- nrow(X) #number observations 
   sigmahat <- model$scale
   muhat <- model$linear.predictors
   y  <- as.numeric(model$y)[1:n]
   nu <- model$parms
   deltahat <- (y - muhat)/sigmahat
-  weights <- (nu+1)/(nu + (deltahat^2))
+  weights <- (nu + 1)/(nu + (deltahat^2))
   
-  if(plot==FALSE)
+  if (plot == FALSE)
     {
     return(weights) 
   }
   else{
-    rD <- residuals(model,"martingalet",tau=0,dist="t")#Martingale-type residual
+    rD <- residuals(model,"martingalet",tau = 0, dist = "t")#Martingale-type residual
     dev.new()
-    par(mar=c(4.0, 4.0,0.1,0.1))
-    plot(rD,weights,pch=20,cex=0.8)
-    if(npoints!=0) identify(rD,weights,n=npoints)
+    par(mar = c(4.0, 4.0,0.1,0.1))
+    plot(rD, weights,pch = 20, cex = 0.8)
+    if (npoints != 0) identify(rD,weights,n = npoints)
   }
 }

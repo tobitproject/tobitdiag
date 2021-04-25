@@ -1,12 +1,12 @@
 Package: tobitdiag
 Title: Local Influence for Tobit Models
-Version: 1.1.0
+Version: 2.0.0
 Authors@R: person("Manoel", "Santos-Neto", email = "mn.neco@gmail.com", role = c("aut", "cre"))
 Description: Diagnostic the influential observations of tobit models using Local
     Influence Analysis of Cook with different curvatures.
-Depends: R (>= 3.1.2), AER, pracma
+Depends: R (>= 3.1.2), AER
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Imports: robustbase
+Imports: robustbase, pracma
 RoxygenNote: 7.1.1

@@ -1,9 +1,11 @@
-#'Residuals
+#'@name tobitdiag
+#'
+#'@aliases residuals
 #'
 #'@description Calculates martingale, deviance, martingale type residuals for normal tobit and tobit-t models.
 #'
 #'@usage
-#'function(model,type,tau=0,dist ="t")
+#'residuals(model,type,tau=0,dist ="t")
 #'
 #'@param model an object of class "tobit" as fitted by tobit. The formula should be a symbolic description of a regression model of type \code{y ~ x1 + x2 + ... + xp}.
 #'@param type what type of residuals should be used. 
@@ -83,12 +85,14 @@ residuals <- function(model, type, tau = 0, dist ="t")
 } #end function
 
 
-#'Envelope
+#'@name tobitdiag
+#'
+#'@aliases envelope
 #'
 #'@description Computes simulation envelopes of a normal tobit and tobit-t model.
 #'
 #'@usage
-#'function(model,res="martingalet",nboot = 19,alpha=0.05,tau=0,
+#'envelope(model,res="martingalet",nboot = 19,alpha=0.05,tau=0,
 #'intercept = "TRUE",dist="t",col="gray80",xlab="Q",ylab="R")
 #'
 #'@param model an object of class "tobit" as fitted by tobit. The formula should be a symbolic description of a regression model of type \code{y ~ x1 + x2 + ... + xp}.
@@ -212,14 +216,14 @@ envelope <- function(model, res = "martingalet", nboot = 19, alpha = 0.05, tau =
     for (i in 1:nboot) {
       ygerado  <- sigmahat*rnorm(n,0,1) + muhat
       if (cens == 'left') n1  <- summary(model)$n[2]  else n1  <- summary(model)$n[4]
-      pc       <- n1/n  #propor??o de obs. cens.
+      pc       <- n1/n
       tau1      <- sort(ygerado)[pc*n]
       
       if (cens == 'left') yestrela <- ifelse(ygerado > tau1, ygerado,tau) else yestrela <- ifelse(ygerado <= tau1, ygerado,tau) 
       if (intercept == "FALSE") form <- yestrela ~ var.explic - 1 else  form <- yestrela ~ var.explic
       if (cens == 'left') model1 <- tobit(form, left = tau) else model1 <- tobit(form, right = tau)
-       rD2   <- residuals(model1, res, tau = tau, dist = "normal")
-       e[,i]    <- sort(rD2)
+      rD2   <- residuals(model1, res, tau = tau, dist = "normal")
+      e[,i]    <- sort(rD2)
     }
     
     e1 <- numeric(n)
