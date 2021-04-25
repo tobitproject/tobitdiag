@@ -56,4 +56,3 @@ cooks.dist(mt,npoints=0,dist="t",ylim=c(0,0.6),plot=TRUE)
 \references{
 Barros, M., Galea, M., Leiva, V. and Santos-Neto, M. Generalized tobit models: Diagnostics and application in econometrics. (submitted manuscript)
 }
-

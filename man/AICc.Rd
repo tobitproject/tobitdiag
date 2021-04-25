@@ -38,4 +38,3 @@ mnormal <- tobit(form) # normal tobit model
 AICc(mnormal,mt)
 
 }
-

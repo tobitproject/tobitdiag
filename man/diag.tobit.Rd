@@ -84,4 +84,3 @@ diag.tobit(mt,npoints = 0,dist="t",perturbation = "explanatory",l=2,plot.ci=TRUE
 \references{
 Barros, M., Galea, M., Leiva, V. and Santos-Neto, M. Generalized tobit models: Diagnostics and application in econometrics. (submitted manuscript)
 }
-

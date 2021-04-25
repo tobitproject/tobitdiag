@@ -51,4 +51,3 @@ abline(h=c(-3,3),lty=2)
 \references{
 Barros, M., Galea, M., Leiva, V. and Santos-Neto, M. Generalized tobit models: Diagnostics and application in econometrics. (submitted manuscript)
 }
-

@@ -4,7 +4,8 @@
 \alias{envelope}
 \title{Envelope}
 \usage{
-function(model,res="martingalet",nboot = 19,alpha=0.05,tau=0,intercept = "TRUE",dist="t",col="gray80",xlab="Q",ylab="R")
+function(model,res="martingalet",nboot = 19,alpha=0.05,tau=0,
+intercept = "TRUE",dist="t",col="gray80",xlab="Q",ylab="R")
 }
 \arguments{
 \item{model}{an object of class "tobit" as fitted by tobit. The formula should be a symbolic description of a regression model of type \code{y ~ x1 + x2 + ... + xp}.}
@@ -51,4 +52,3 @@ envelope(mt,dist = "t")
 \references{
 Barros, M., Galea, M., Leiva, V. and Santos-Neto, M. Generalized tobit models: Diagnostics and application in econometrics. (submitted manuscript)
 }
-

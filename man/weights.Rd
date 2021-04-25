@@ -37,4 +37,3 @@ Estimate weight in the maximum likelihood estimation procedure under the tobit-t
 \references{
 Barros, M., Galea, M., Leiva, V. and Santos-Neto, M. Generalized tobit models: Diagnostics and application in econometrics. (submitted manuscript)
 }
-
